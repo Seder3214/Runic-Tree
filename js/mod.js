@@ -13,14 +13,15 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.1.2",
+	num: "0.1.3",
 	name: "Literally nothing",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-	<br><h3 style='color: #C0C0C0;'>v0.1.2 - Runes</h3><br>
+	<br><h3 style='color: #C0C0C0;'>v0.1.3 - Runes</h3><br>
 			<span style='color: #808080'>- Added new layer.<br>
-			- Added 5 runes (2 of them cannot be buyed :P)<br></span>
+			- Added 5 runes (2 of them cannot be buyed :P)<br>
+			- Changed font of the game<br></span>
 	<h3 style='color: #452d35;'>v0.1 - Essences</h3><br>
 		<span style='color: #808080'>- Added new layer.<br>
 		- Added full content.</span>`
