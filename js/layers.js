@@ -12,9 +12,12 @@ addLayer("e", {
 		r: new Decimal(0),
 		e: new Decimal(0),
 		l: new Decimal(0),
+		rc: new Decimal(0),
 		na: new Decimal(25),
 		sa: new Decimal(15),
 		ga: new Decimal(5),
+		ra: new Decimal(1),
+		r2a: new Decimal(1),
     }},
     color: "#452d35",
     requires: new Decimal(8250), // Can be a function that takes requirement increases into account
@@ -29,6 +32,7 @@ addLayer("e", {
 		if (hasUpgrade(this.layer, 21)) mult = mult.times(upgradeEffect(this.layer, 21))
 			if (player.e.uc.gte(1)) mult = mult.times(player.e.uc.times(1.05).max(1))
 			if (player.e.e.gte(1)) mult = mult.times(player.e.e.times(1.75).max(1))
+				if (player.r.buyables[23].gte(1)) mult = mult.times(buyableEffect("r", 23))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -62,7 +66,7 @@ addLayer("e", {
 				unlocked() {return (hasUpgrade("e", 22))},
                 content: [
                 ["blank", "15px"],
-					["display-text", () => "You have " + formatWhole(player.e.c) + " Common Essence Shards ("+ format(player.e.c.add(1).pow(0.65)) + "x to points) <br>" + formatWhole(player.e.uc) + " Uncommon Essence Shards ("+ format(player.e.uc.times(1.05).max(1)) + "x to essences)<br>" + formatWhole(player.e.r) + " Rare Essence Shards ("+ format(player.e.r.times(1.25).max(1)) + "x to Essence II)<br>" + formatWhole(player.e.e) + " Epic Essence Shards (" + format(player.e.e.times(1.75).max(1)) + "x to Common Essence Shards and essences Gain)<br>" + formatWhole(player.e.l) + " Legendary Essence Shards (" + format(player.e.l.times(2.35).max(1)) + "x to Uncommon Essence Shards and Points gain) <br>",],
+					["display-text", () => "You have " + formatWhole(player.e.c) + " Common Essence Shards ("+ format(player.e.c.add(1).pow(0.65)) + "x to points) <br>" + formatWhole(player.e.uc) + " Uncommon Essence Shards ("+ format(player.e.uc.times(1.05).max(1)) + "x to essences)<br>" + formatWhole(player.e.r) + " Rare Essence Shards ("+ format(player.e.r.times(1.25).max(1)) + "x to Essence II)<br>" + formatWhole(player.e.e) + " Epic Essence Shards (" + format(player.e.e.times(1.75).max(1)) + "x to Common Essence Shards and essences Gain)<br>" + formatWhole(player.e.l) + " Legendary Essence Shards (" + format(player.e.l.times(2.35).max(1)) + "x to Uncommon Essence Shards and Points gain) <br>" + format(player.e.rc) + " Relic Essence Shards (+" + format(player.e.rc.pow(0.05)) + " Rare Essence Shards/s and +" + format(player.e.rc.pow(0.01).div(2)) + " Legendary and Epic Essence Shards/s)",],
 				"clickables"
                 ]
             },
@@ -163,13 +167,13 @@ upgrades: {
 		unlocked() {return player.e.buyables[11].gte(75)},
 },
 	23: {
-		title: "Essence VII",
+		title: "Essence VIII",
 		description: "Generate 1 Common Essence Shard per/s",
 		cost: new Decimal(1e10),
 		unlocked() {return (hasUpgrade(this.layer, 22))},
 },
 	24: {
-		title: "Essence VII",
+		title: "Essence IX",
 		description: "Generate 1 Uncommon Essence Shard per/s. <br> Double passive Common Essence Shards Gain",
 		cost: new Decimal(2e10),
 		unlocked() {return (hasUpgrade(this.layer, 23))},
@@ -185,8 +189,8 @@ roll = Math.random() * (2.9 - 1) + (1);
 player.e.points = player.e.points.sub(100000) // replacing min and max with their proper variable locations
 player.e.d = Math.floor(roll)
 player.e.na = player.e.na.sub(1)
-if (player.e.d == 1) player.e.c = player.e.c.add(new Decimal(1).times(buyableEffect("r", 11)))
-if (player.e.d == 2) player.e.uc = player.e.uc.add(new Decimal(1).times(buyableEffect("r", 12)))
+if (player.e.d == 1) player.e.c = player.e.c.add(new Decimal(1).times(buyableEffect("r", 11)).times(upgradeEffect("r", 11)))
+if (player.e.d == 2) player.e.uc = player.e.uc.add(new Decimal(1).times(buyableEffect("r", 12)).times(upgradeEffect("r", 11)))
 },
 },
     12: {
@@ -197,8 +201,8 @@ onClick() {
 roll = Math.random() * (3.9 - 1) + (1); 
 player.e.points = player.e.points.sub(38000000) // replacing min and max with their proper variable locations
 player.e.d = Math.floor(roll)
-if (player.e.d == 1) player.e.c = player.e.c.add(1)
-if (player.e.d == 2) player.e.uc = player.e.uc.add(1)
+if (player.e.d == 1) player.e.c = player.e.c.add(new Decimal(1).times(buyableEffect("r", 11)).times(upgradeEffect("r", 11)))
+if (player.e.d == 2) player.e.uc = player.e.uc.add(new Decimal(1).times(buyableEffect("r", 12)).times(upgradeEffect("r", 11)))
 if (player.e.d == 3) player.e.r = player.e.r.add(1)
 player.e.sa = player.e.sa.sub(1)
 },
@@ -211,19 +215,56 @@ onClick() {
 roll = Math.random() * (2.9 - 1) + (1); 
 player.e.points = player.e.points.sub(1e9) // replacing min and max with their proper variable locations
 player.e.d = Math.floor(roll)
-if (player.e.d == 1) player.e.e = player.e.e.add(1)
-if (player.e.d == 2) player.e.l = player.e.l.add(1)
+if (player.e.d == 1) player.e.e = player.e.e.add(new Decimal(1).times(buyableEffect("r", 22))).add(1)
+if (player.e.d == 2) player.e.l = player.e.l.add(new Decimal(1).times(buyableEffect("r", 21))).add(1)
 player.e.ga = player.e.ga.sub(1)
+},
+},
+    21: {
+		title: "Reroll Boxes",
+        display() { return "Refresh available amount of boxes at reduced rate.<br> Cost: 1e18 Essences<br> Available: " + formatWhole(player.e.ra)},
+		canClick() { return (player.e.points.gte(1e18)&& player.e.ra.gt(0)) },
+onClick() {
+player.e.points = player.e.points.sub(1e18) // replacing min and max with their proper variable locations
+player.e.ga = player.e.ga.add(3)
+player.e.ra = player.e.ra.sub(1)
+player.e.sa = player.e.sa.add(7)
+player.e.na = player.e.na.add(10)
+},
+},
+    22: {
+		title: "Reroll Boxes II",
+        display() { return "Refresh available amount of boxes at reduced rate.<br> Cost: 1e28 Essences<br> Available: " + formatWhole(player.e.r2a)},
+		canClick() { return (player.e.points.gte(1e28)&& player.e.r2a.gt(0)) },
+onClick() {
+player.e.points = player.e.points.sub(1e28) // replacing min and max with their proper variable locations
+player.e.ga = player.e.ga.add(3)
+player.e.r2a = player.e.r2a.sub(1)
+player.e.sa = player.e.sa.add(7)
+player.e.na = player.e.na.add(10)
 },
 },
 },
 update(diff) {
+		if (player.e.rc.gte(0)) {
+			player.e.rc = player.e.rc.add((buyableEffect("r", 14)).times(diff))
+			player.e.r = player.e.r.add(player.e.rc.pow(0.05).times(diff))
+		player.e.l = player.e.l.add(player.e.rc.pow(0.01).div(2).times(diff))
+		player.e.e = player.e.e.add(player.e.rc.pow(0.01).div(2).times(diff))
+			}
 		if (hasUpgrade(this.layer, 23)) {
-			player.e.uc = player.e.uc.add(player.e.l.times(2.35).times(buyableEffect("r", 12)).times(diff)).add(diff)
+			player.e.uc = player.e.uc.add(player.e.l.times(2.35).times(buyableEffect("r", 12)).times(upgradeEffect("r", 11)).times(diff)).add(diff)
 			player.e.c = player.e.c.add(diff)
 			}
-	if (hasUpgrade(this.layer, 23)) return player.e.c = player.e.c.add(player.e.e.times(1.75).times(buyableEffect("r", 11)).times(diff)).add(diff)
+	if (hasUpgrade(this.layer, 23)) return player.e.c = player.e.c.add(player.e.e.times(1.75).times(buyableEffect("r", 11)).times(upgradeEffect("r", 11)).times(diff)).add(diff)
 },
+			    		doReset(resettingLayer) {
+			if (layers[resettingLayer].row <= layers[this.layer].row) return
+			let keep = [];
+			if (hasUpgrade("r", 12)) keep.push("buyables")
+			if (hasUpgrade("r", 14)) keep.push("buyables", "upgrades")
+		  layerDataReset("e", keep)
+		},
     layerShown(){return true}
 })
 addLayer("r", {
@@ -241,10 +282,12 @@ addLayer("r", {
     baseResource: "essence", // Name of resource prestige is based on
     baseAmount() {return player.e.points}, // Get the current amount of baseResource
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-    exponent: 0.5, 
+    exponent: 5, 
 	branches: ["e"],// Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
+		if (player.r.buyables[24].gte(1)) mult = mult.div(buyableEffect("r", 24))
+		if (hasUpgrade(this.layer, 13)) mult = mult.div(upgradeEffect(this.layer, 13))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -279,9 +322,10 @@ addLayer("r", {
 	buyables: {
 							      11: {
 		title: "<alternate>Arzos</alternate>",
+				purchaseLimit: 50,
         cost(x) {return new Decimal(180).times(x.times(2).max(1)).times(x.pow(0.65).max(1))},
 		canAfford() {return (player.e.c.gte(this.cost()))},
-        display() {return `<h5>Boost Common Shards Gain.<br>Level: ${formatWhole(getBuyableAmount(this.layer, this.id))}<br>Cost: ${format(this.cost())} Common Shards<br>Effect: x${format(this.effect())}</h5>`},
+        display() {return `<h5>Boost Common Shards Gain.<br>Level: ${formatWhole(getBuyableAmount(this.layer, this.id))}/50<br>Cost: ${format(this.cost())} Common Shards<br>Effect: x${format(this.effect())}</h5>`},
         buy() {
           player.e.c = player.e.c.sub(this.cost())
 			  setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
@@ -297,9 +341,10 @@ eff = x.pow(1.5).times(1.5).max(1)
       },
 							      12: {
 		title: "<alternate>Berhuvz</alternate>",
+				purchaseLimit: 100,
         cost(x) {return new Decimal(240).times(x.times(4).max(1)).times(x.pow(0.5).max(1))},
 		canAfford() {return (player.e.uc.gte(this.cost()))},
-        display() {return `<h5>Boost Unommon Shards Gain.<br>Level: ${formatWhole(getBuyableAmount(this.layer, this.id))}<br>Cost: ${format(this.cost())} Unommon Shards<br>Effect: x${format(this.effect())}</h5>`},
+        display() {return `<h5>Boost Unommon Shards Gain.<br>Level: ${formatWhole(getBuyableAmount(this.layer, this.id))}/100<br>Cost: ${format(this.cost())} Unommon Shards<br>Effect: x${format(this.effect())}</h5>`},
         buy() {
           player.e.uc = player.e.uc.sub(this.cost())
 			  setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
@@ -316,8 +361,9 @@ eff = x.pow(1.75).times(3).max(1)
 							      13: {
 		title: "<alternate>Cerzas</alternate>",
         cost(x) {return new Decimal(1).times(x.add(1))},
+		purchaseLimit: 3,
 		canAfford() {return (player.r.points.gte(this.cost()))},
-        display() {return `<h5>Boost Points Gain.<br>Level: ${formatWhole(getBuyableAmount(this.layer, this.id))}<br>Cost: ${format(this.cost())} Runes<br>Effect: x${format(this.effect())}</h5>`},
+        display() {return `<h5>Boost Points Gain.<br>Level: ${formatWhole(getBuyableAmount(this.layer, this.id))}/3<br>Cost: ${format(this.cost())} Runes<br>Effect: x${format(this.effect())}</h5>`},
         buy() {
           player.r.points = player.r.points.sub(this.cost())
 			  setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
@@ -334,14 +380,15 @@ eff = x.pow(2.35).times(3).max(1)
 							      14: {
 		title: "<alternate>Dolus</alternate>",
         cost(x) {return new Decimal(1000000).times(x.add(1))},
-		canAfford() {return (player.e.c.gte(this.cost()))},
-        display() {return `<h5>Gain 0.17 Relict Shards/s<br>Level: ${formatWhole(getBuyableAmount(this.layer, this.id))}<br>Cost: ${format(this.cost())} Common Shards<br>Effect: +${format(this.effect())}s</h5>`},
+				purchaseLimit: 25,
+		canAfford() {return (player.e.uc.gte(this.cost()))},
+        display() {return `<h5>Generate Relic Shards<br>Level: ${formatWhole(getBuyableAmount(this.layer, this.id))}/25<br>Cost: ${format(this.cost())} Uncommon Shards<br>Effect: +${format(this.effect())}/s</h5>`},
         buy() {
-          player.e.c = player.e.c.sub(this.cost())
+          player.e.uc = player.e.uc.sub(this.cost())
 			  setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
         },
 		effect(x) {
-eff = x.times(0.17).max(0.01)
+eff = x.times(0.35)
 		return eff;
         },
         style: {
@@ -349,20 +396,137 @@ eff = x.times(0.17).max(0.01)
           height: "80px",
         },
       },
-							      15: {
-		title: "<alternate>Enjans</alternate>",
-        cost(x) {return new Decimal(10).times(x.add(1))},
-		canAfford() {return (player.e.l.gte(this.cost()))},
-        display() {return `<h5>Unlock Enchance<br>Level: ${formatWhole(getBuyableAmount(this.layer, this.id))}<br>Cost: ${format(this.cost())} Legendary Shards<br></h5>`},
+							      21: {
+		title: "<alternate>Faaz</alternate>",
+        cost(x) {return new Decimal(365000).times(x.add(1))},
+				purchaseLimit: 7,
+		canAfford() {return (player.e.c.gte(this.cost()))},
+        display() {return `<h5>Boost Legendary Shards gain<br>Level: ${formatWhole(getBuyableAmount(this.layer, this.id))}/7<br>Cost: ${format(this.cost())} Common Shards<br>Effect: x${format(this.effect())}</h5>`},
         buy() {
-          player.e.l = player.re.l.sub(this.cost())
+          player.e.c = player.e.c.sub(this.cost())
 			  setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+        },
+		effect(x) {
+eff = x.times(2).pow(1.15).max(1)
+		return eff;
         },
         style: {
           width: "80px",
           height: "80px",
         },
       },
+							      22: {
+		title: "<alternate>Grakk</alternate>",
+				purchaseLimit: 7,
+        cost(x) {return new Decimal(5).times(x.add(1))},
+		canAfford() {return (player.e.r.gte(this.cost()))},
+        display() {return `<h5>Boost Epic Shards gain<br>Level: ${formatWhole(getBuyableAmount(this.layer, this.id))}/7<br>Cost: ${format(this.cost())} Rare Shards<br>Effect: x${format(this.effect())}</h5>`},
+        buy() {
+          player.e.r = player.e.r.sub(this.cost())
+			  setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+        },
+		effect(x) {
+eff = x.times(1.45).pow(1.25).max(1)
+		return eff;
+        },
+        style: {
+          width: "80px",
+          height: "80px",
+        },
+      },
+							      23: {
+		title: "<alternate>Staurz</alternate>",
+        cost(x) {return new Decimal(1e23).pow(x.pow(0.25).max(1))},
+				purchaseLimit: 7,
+		canAfford() {return (player.e.points.gte(this.cost()))},
+        display() {return `<h5>Boost essences gain<br>Level: ${formatWhole(getBuyableAmount(this.layer, this.id))}/7<br>Cost: ${format(this.cost())} Essences<br>Effect: x${format(this.effect())}</h5>`},
+        buy() {
+          player.e.points = player.e.points.sub(this.cost())
+			  setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+        },
+		effect(x) {
+eff = x.times(2.45).pow(1.75).max(1)
+		return eff;
+        },
+        style: {
+          width: "80px",
+          height: "80px",
+        },
+      },
+							      24: {
+		title: "<alternate>Ehvaz</alternate>",
+        cost(x) {return new Decimal(75).pow(x.pow(0.01).max(1))},
+				purchaseLimit: 4,
+		canAfford() {return (player.e.l.gte(this.cost()))},
+        display() {return `<h5>Reduce runes cost<br>Level: ${formatWhole(getBuyableAmount(this.layer, this.id))}/4<br>Cost: ${format(this.cost())} Legendary Shards<br>Effect: /${format(this.effect())}</h5>`},
+        buy() {
+          player.e.l = player.e.l.sub(this.cost())
+			  setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+        },
+		effect(x) {
+eff = x.times(10.5).pow(20.75).pow(player.r.buyables[31].add(1)).max(1)
+		return eff;
+        },
+        style: {
+          width: "80px",
+          height: "80px",
+        },
+      },
+							      31: {
+		title: "<alternate>Zolos</alternate>",
+        cost(x) {return new Decimal(3).add(x)},
+				purchaseLimit: 2,
+		canAfford() {return (player.r.points.gte(this.cost()) && player.r.buyables[24].gte(4))},
+        display() {return `Req: All maxed Runes <br> Lose all runes and buff Ehvaz. Unlock one row of upgrades<br>Level: ${formatWhole(getBuyableAmount(this.layer, this.id))}/2<br>Cost: ${format(this.cost())} Runes`},
+        buy() {
+          player.r.points = player.r.points.sub(this.cost())
+			  setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+			  player.r.buyables[11] = new Decimal(0)
+			   player.r.buyables[12] = new Decimal(0)
+			   player.r.buyables[13] = new Decimal(0)
+			   player.r.buyables[14] = new Decimal(0)
+			   player.r.buyables[15] = new Decimal(0)
+			   player.r.buyables[21] = new Decimal(0)
+			   player.r.buyables[22] = new Decimal(0)
+			   player.r.buyables[23] = new Decimal(0)
+			   player.r.buyables[24] = new Decimal(0)
+			   layerDataReset("e")
+        },
+        style: {
+          width: "130px",
+          height: "130px",
+        },
+      },
+},
+upgrades: {
+	11: {
+		title: "Runes I",
+		description: "Zolos boosts Points and Common/Uncommon Shards gain",
+		cost: new Decimal(1),
+		effect() {return new Decimal(5).pow(player.r.buyables[31].times(1.75))},
+		effectDisplay() {return format(upgradeEffect("r", 11)) + "x"},
+	},
+	12: {
+		title: "Runes II",
+		unlocked() {return hasUpgrade("r", 11)},
+		description: "Keep [Essence Purifier] on Runes reset",
+		cost: new Decimal(3),
+	},
+	13: {
+		title: "Runes III",
+		description: "Runes cheapens themselves<br>Req: 2 Zolos",
+		unlocked() {return hasUpgrade("r", 12)},
+		cost: new Decimal(4),
+		canAfford() {return (player.r.buyables[31].gt(1) && player.r.points.gte(4))},
+		effect() {return new Decimal(1e15).pow(player.r.points.pow(1.925))},
+		effectDisplay() {return "/" + format(upgradeEffect("r", 13))},
+	},
+	14: {
+		title: "Runes IV",
+		unlocked() {return hasUpgrade("r", 13)},
+		description: "Unlock new content, and keep Essence upgrades on reset",
+		cost: new Decimal(5),
+	},
 },
     layerShown(){return true}
 })

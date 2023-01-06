@@ -13,12 +13,15 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.1.3",
+	num: "0.2.1",
 	name: "Literally nothing",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-	<br><h3 style='color: #C0C0C0;'>v0.1.3 - Runes</h3><br>
+	<br><h3 style='color: #C0C0C0;'>v0.2.1 - Runes</h3><br>
+			<span style='color: #808080'>- Added 4 more runes<br>
+			- Added upgrades<br></span>
+	<h3 style='color: #C0C0C0;'>v0.1.3</h3><br>
 			<span style='color: #808080'>- Added new layer.<br>
 			- Added 5 runes (2 of them cannot be buyed :P)<br>
 			- Changed font of the game<br></span>
@@ -51,6 +54,7 @@ function getPointGen() {
 	if (player.e.c.gte(1)) gain = gain.times(player.e.c.add(1).pow(0.65))
 	if (player.e.l.gte(1)) gain = gain.times(player.e.l.add(1).times(2.35))
 	if (player.r.buyables[13].gte(1)) gain = gain.times(buyableEffect("r", 13))
+		if (hasUpgrade("r", 11)) gain = gain.times(upgradeEffect("r", 11))
 	return gain
 }
 // You can add non-layer related variables that should to into "player" and be saved here, along with default values
