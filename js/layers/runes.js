@@ -20,7 +20,7 @@ addLayer("r", {
 	branches: ["e"],// Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
-		if (hasUpgrade("e", 25))mult = mult.times(buyableEffect("r", 24)).times(upgradeEffect(this.layer, 13))
+		if (hasUpgrade("e", 25)) mult = mult.times(buyableEffect("r", 24)).times(upgradeEffect(this.layer, 13))
 		if (player.r.buyables[24].gte(1)) mult = mult.div(buyableEffect("r", 24))
 		if (hasUpgrade(this.layer, 13)) mult = mult.div(upgradeEffect(this.layer, 13))
         return mult
@@ -257,7 +257,7 @@ upgrades: {
 		unlocked() {return hasUpgrade("r", 12)},
 		cost: new Decimal(4),
 		canAfford() {return (player.r.buyables[31].gt(1) && player.r.points.gte(4))},
-		effect() {return new Decimal(1e15).pow(player.r.points.pow(1.925))},
+		effect() {return new Decimal(1e15).pow(player.r.points.pow(1.925)).min(1e308)},
 		effectDisplay() {return "/" + format(upgradeEffect("r", 13))},
 	},
 	14: {

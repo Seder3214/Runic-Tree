@@ -8,7 +8,7 @@ addLayer("a", {
 		best: new Decimal(0),
     }},
     color: "#00CED1",
-    requires() {return new Decimal(1e13)}, // Can be a function that takes requirement increases into account
+    requires() {return new Decimal(1e11)}, // Can be a function that takes requirement increases into account
     resource: "artifact slots", // Name of prestige currency
     baseResource: "runes", // Name of resource prestige is based on
     baseAmount() {return player.r.points}, // Get the current amount of baseResource
@@ -52,5 +52,5 @@ addLayer("a", {
 	doReset() {
 		layerDataReset("e")
 	},
-    layerShown(){return (player.r.points.gte(1e13) || player[this.layer].unlocked)}
+    layerShown(){return (player.r.points.gte(1e11) || player[this.layer].unlocked)}
 })

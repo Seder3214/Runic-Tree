@@ -290,7 +290,7 @@ upgrades: {
 	42: {
 		title: "Essence XV",
 		description: "Increase purchase limit of [Essence Purifier] by 75",
-		cost: new Decimal(1e85),
+		cost: new Decimal(1e80),
 		effect() {if (hasUpgrade("e", 42)) return new Decimal(75)},
 				effectDisplay() {return "+" + format(upgradeEffect("e", 42))},
 		unlocked() {return (hasUpgrade("e", 41))},
@@ -305,7 +305,7 @@ upgrades: {
 	43: {
 		title: "Essence XVI",
 		description: "Increase purchase limit of [Essence Extractor] by 25",
-		cost: new Decimal(1e90),
+		cost: new Decimal(1e86),
 		effect() {if (hasUpgrade("e", 43)) return new Decimal(25)},
 				effectDisplay() {return "+" + format(upgradeEffect("e", 43))},
 		unlocked() {return (hasUpgrade("e", 42))},
