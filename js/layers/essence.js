@@ -28,6 +28,9 @@ addLayer("e", {
     exponent: 0.5, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
+				if (hasUpgrade("e", 31)) mult = mult.times(upgradeEffect("e", 31))
+		if (hasUpgrade("r", 22)) mult = mult.times(upgradeEffect("r", 22))
+				if (hasUpgrade("r", 21)) mult = mult.times(upgradeEffect("r", 21))
 		if (hasUpgrade(this.layer, 13)) mult = mult.times(upgradeEffect(this.layer, 13))
 		if (hasUpgrade(this.layer, 21)) mult = mult.times(upgradeEffect(this.layer, 21))
 			if (player.e.uc.gte(1)) mult = mult.times(player.e.uc.times(1.05).max(1))
@@ -45,6 +48,7 @@ addLayer("e", {
 				        tabFormat: [
         "main-display",
         "prestige-button",
+		        ["blank", "25px"],
         ["microtabs", "stuff"],
         ["blank", "25px"],
     ],
@@ -53,13 +57,17 @@ addLayer("e", {
 		                    "Main": {
                 content: [
                     ["blank", "15px"],
-					["buyables", [1]]
+					["buyables", [1]],
+					                ["blank", "15px"]
                 ]
             },
 			                    "Upgrades": {
                 content: [
                     ["blank", "15px"],
-					"upgrades"
+					 ["upgrades", [1,2]], 
+					 ["row", [["buyables", [2]], ["upgrades", [3]]]],
+					 ["upgrades", [4]], 
+					                 ["blank", "15px"],
                 ]
             },
 			                    "Lootboxes": {
@@ -67,7 +75,8 @@ addLayer("e", {
                 content: [
                 ["blank", "15px"],
 					["display-text", () => "You have " + formatWhole(player.e.c) + " Common Essence Shards ("+ format(player.e.c.add(1).pow(0.65)) + "x to points) <br>" + formatWhole(player.e.uc) + " Uncommon Essence Shards ("+ format(player.e.uc.times(1.05).max(1)) + "x to essences)<br>" + formatWhole(player.e.r) + " Rare Essence Shards ("+ format(player.e.r.times(1.25).max(1)) + "x to Essence II)<br>" + formatWhole(player.e.e) + " Epic Essence Shards (" + format(player.e.e.times(1.75).max(1)) + "x to Common Essence Shards and essences Gain)<br>" + formatWhole(player.e.l) + " Legendary Essence Shards (" + format(player.e.l.times(2.35).max(1)) + "x to Uncommon Essence Shards and Points gain) <br>" + format(player.e.rc) + " Relic Essence Shards (+" + format(player.e.rc.pow(0.05)) + " Rare Essence Shards/s and +" + format(player.e.rc.pow(0.01).div(2)) + " Legendary and Epic Essence Shards/s)",],
-				"clickables"
+		                ["blank", "15px"],
+		"clickables"
                 ]
             },
 	},
@@ -75,10 +84,12 @@ addLayer("e", {
 	buyables: {
 							      11: {
 		title: "Essence Purifier",
-		purchaseLimit: 75,
+		purchaseLimit() {if (hasUpgrade("e", 42)) return new Decimal(75).add(upgradeEffect("e", 42))
+			else return new Decimal(75)},
         cost(x) {return new Decimal(0.42).times(new Decimal(2).times(x.pow(1.45)).max(1)).pow(x.div(30).max(1))},
 		canAfford() {return (player.points.gte(this.cost()))},
-        display() {if (buyableEffect("e", 11).gte(new Decimal(200).times(upgradeEffect("e",12)))) return `Boost Point Gain. (boosted by essences amount)<br>Level: ${formatWhole(getBuyableAmount(this.layer, this.id))}/75<br>Cost: ${format(this.cost())} points<br>Effect: x${format(this.effect())} (softcapped)`
+        display() {if (hasUpgrade("e", 42)) return `Boost Point Gain. (boosted by essences amount)<br>Level: ${formatWhole(getBuyableAmount(this.layer, this.id))}/150<br>Cost: ${format(this.cost())} points<br>Effect: x${format(this.effect())} (softcapped)`
+			if (buyableEffect("e", 11).gte(new Decimal(200).times(upgradeEffect("e",12)))) return `Boost Point Gain. (boosted by essences amount)<br>Level: ${formatWhole(getBuyableAmount(this.layer, this.id))}/75<br>Cost: ${format(this.cost())} points<br>Effect: x${format(this.effect())} (softcapped)`
 			else return `Boost Point Gain. (boosted by essences amount)<br>Level: ${formatWhole(getBuyableAmount(this.layer, this.id))}/75<br>Cost: ${format(this.cost())} points<br>Effect: x${format(this.effect())}`},
         buy() {
           player.points = player.points.sub(this.cost())
@@ -86,14 +97,57 @@ addLayer("e", {
         },
 		effect(x) {
 eff = new Decimal(1.65).pow(x).times(upgradeEffect("e",11)).times(player.e.points.add(1).pow(1.35)).times(upgradeEffect("e",14))
-	 eff = softcap(eff, new Decimal(250).times(upgradeEffect("e",12)), new Decimal(0.15))
+	 eff = softcap(eff, new Decimal(250).times(upgradeEffect("e",12)).pow(buyableEffect("e",21)), new Decimal(0.15))
 		return eff;
         },
         style: {
-          width: "120px",
-          height: "150px",
+          width: "160px",
+		  'border-radius': '5%',
+          height: "100px",
         },
       },
+							      12: {
+		title: "Essence Extractor",
+		unlocked() {return hasUpgrade("r", 14)},
+		purchaseLimit() {if (hasUpgrade("e", 43)) return new Decimal(50).add(upgradeEffect("e", 43))
+			else return new Decimal(50)},
+        cost(x) {return new Decimal(1e55).times(new Decimal(450).times(x.pow(4.25)).max(1))},
+		canAfford() {return (player.points.gte(this.cost()))},
+        display() {if (hasUpgrade("e", 42)) return `Boost Point Gain.<br>Level: ${formatWhole(getBuyableAmount(this.layer, this.id))}/75<br>Cost: ${format(this.cost())} points<br>Effect: x${format(this.effect())}`
+			else return `Boost Point Gain.<br>Level: ${formatWhole(getBuyableAmount(this.layer, this.id))}/50<br>Cost: ${format(this.cost())} points<br>Effect: x${format(this.effect())}`},
+        buy() {
+          player.points = player.points.sub(this.cost())
+			  setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+        },
+		effect(x) {
+eff = new Decimal(120).times(x.add(1).pow(2.35))
+		return eff;
+        },
+        style: {
+          width: "160px",
+		  'border-radius': '5%',
+          height: "100px",
+        },
+      },
+	  	21: {
+		title: "Essence X",
+		 cost(x) {return new Decimal(1e40).times(new Decimal(45000).times(x.times(x).pow(5.25).max(0.5)).pow(x.sub(7).max(1)))},
+        display() { return `Increase [Essence Purifier] softcap.<br>Cost: ${format(this.cost())} essences<br>Currently: ^${format(this.effect())}`},
+		effect(x) {eff = new Decimal(1.05).pow(x)
+	 eff = softcap(eff, new Decimal(1.1), new Decimal(0.1))
+	 return eff;},
+				canAfford() {return (player.e.points.gte(this.cost()))},
+		        buy() {
+          player.e.points = player.e.points.sub(this.cost())
+			  setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+        },
+        style: {
+          width: "160px",
+		  'border-radius': '5%',
+          height: "100px",
+        },
+		unlocked() {return hasUpgrade("r", 14)},
+},
 },
 upgrades: {
 	11: {
@@ -177,6 +231,91 @@ upgrades: {
 		description: "Generate 1 Uncommon Essence Shard per/s. <br> Double passive Common Essence Shards Gain",
 		cost: new Decimal(2e10),
 		unlocked() {return (hasUpgrade(this.layer, 23))},
+},
+	25: {
+		title: "Essence XI",
+		description: "Change Runes cost exponent and change its style to normal.",
+		cost: new Decimal(1e50),
+		unlocked() {return (player.e.buyables[21].gte(1))},
+},
+	31: {
+		title: "Essence XII",
+		description: "Boost essences gain based on time played",
+		cost: new Decimal(1e67),
+		effect() {return effect = Decimal.pow(1.0002, player.timePlayed)
+		return effect},
+				effectDisplay() {return "x" + format(upgradeEffect("e", 31))},
+		unlocked() {return (hasUpgrade("r", 23))},
+		        style: {
+          width: "160px",
+		  'border-radius': '5%',
+          'min-height': "100px",
+		  'margin-top': '18px',
+		  'margin-left': '5px',
+        },
+},
+	32: {
+		title: "Essence XIII",
+		description: "Boost points gain based on time played",
+		cost: new Decimal(1e73),
+		effect() {return effect = Decimal.pow(1.00024, player.timePlayed)
+		return effect},
+				effectDisplay() {return "x" + format(upgradeEffect("e", 32))},
+		unlocked() {return (hasUpgrade("e", 31))},
+		        style: {
+          width: "160px",
+		  'border-radius': '5%',
+          'min-height': "100px",
+		  'margin-top': '18px',
+		  'margin-left': '13px',
+        },
+},
+	41: {
+		title: "Essence XIV",
+		description: "Essence upgrades after X applies to Runes VII",
+		cost: new Decimal(2e78),
+		effect() {if (hasUpgrade("e", 43)) return new Decimal(5)
+			if (hasUpgrade("e", 42)) return new Decimal(4)
+			if (hasUpgrade("e", 41)) return new Decimal(3)
+			else return new Decimal(2)},
+				effectDisplay() {return "+" + format(upgradeEffect("e", 41))},
+		unlocked() {return (hasUpgrade("e", 41))},
+		        style: {
+          width: "160px",
+		  'border-radius': '5%',
+          'min-height': "100px",
+		  'margin-bottom': '13px',
+        },
+},
+	42: {
+		title: "Essence XV",
+		description: "Increase purchase limit of [Essence Purifier] by 75",
+		cost: new Decimal(1e85),
+		effect() {if (hasUpgrade("e", 42)) return new Decimal(75)},
+				effectDisplay() {return "+" + format(upgradeEffect("e", 42))},
+		unlocked() {return (hasUpgrade("e", 41))},
+		        style: {
+          width: "160px",
+		  'border-radius': '5%',
+          'min-height': "100px",
+		  'margin-bottom': '13px',
+		  		  'margin-left': '13px',
+        },
+},
+	43: {
+		title: "Essence XV",
+		description: "Increase purchase limit of [Essence Extractor] by 25",
+		cost: new Decimal(1e90),
+		effect() {if (hasUpgrade("e", 43)) return new Decimal(25)},
+				effectDisplay() {return "+" + format(upgradeEffect("e", 43))},
+		unlocked() {return (hasUpgrade("e", 42))},
+		        style: {
+          width: "160px",
+		  'border-radius': '5%',
+          'min-height': "100px",
+		  'margin-bottom': '13px',
+		  		  'margin-left': '13px',
+        },
 },
 },
 clickables: {
@@ -265,268 +404,5 @@ update(diff) {
 			if (hasUpgrade("r", 14)) keep.push("buyables", "upgrades")
 		  layerDataReset("e", keep)
 		},
-    layerShown(){return true}
-})
-addLayer("r", {
-    name: "runes", // This is optional, only used in a few places, If absent it just uses the layer id.
-    symbol: "R", // This appears on the layer's node. Default is the id with the first letter capitalized
-    position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
-    startData() { return {
-        unlocked: false,
-		points: new Decimal(0),
-		best: new Decimal(0),
-    }},
-    color: "#C0C0C0",
-    requires: new Decimal(2e12), // Can be a function that takes requirement increases into account
-    resource: "runes", // Name of prestige currency
-    baseResource: "essence", // Name of resource prestige is based on
-    baseAmount() {return player.e.points}, // Get the current amount of baseResource
-    type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-    exponent: 5, 
-	branches: ["e"],// Prestige currency exponent
-    gainMult() { // Calculate the multiplier for main currency from bonuses
-        mult = new Decimal(1)
-		if (player.r.buyables[24].gte(1)) mult = mult.div(buyableEffect("r", 24))
-		if (hasUpgrade(this.layer, 13)) mult = mult.div(upgradeEffect(this.layer, 13))
-        return mult
-    },
-    gainExp() { // Calculate the exponent on main currency from bonuses
-        return new Decimal(1)
-    },
-    row: 1, // Row the layer is in on the tree (0 is the first row)
-    hotkeys: [
-        {key: "r", description: "r: Reset for runes", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
-    ],
-				        tabFormat: [
-        "main-display",
-        "prestige-button",
-        ["microtabs", "stuff"],
-        ["blank", "25px"],
-    ],
-	microtabs: {
-    stuff: {
-		                    "Main": {
-                content: [
-                    ["blank", "15px"],
-					["buyables", [1,2,3]]
-                ]
-            },
-			                    "Upgrades": {
-                content: [
-                    ["blank", "15px"],
-					"upgrades"
-                ]
-            },
-	},
-	},
-	buyables: {
-							      11: {
-		title: "<alternate>Arzos</alternate>",
-				purchaseLimit: 50,
-        cost(x) {return new Decimal(180).times(x.times(2).max(1)).times(x.pow(0.65).max(1))},
-		canAfford() {return (player.e.c.gte(this.cost()))},
-        display() {return `<h5>Boost Common Shards Gain.<br>Level: ${formatWhole(getBuyableAmount(this.layer, this.id))}/50<br>Cost: ${format(this.cost())} Common Shards<br>Effect: x${format(this.effect())}</h5>`},
-        buy() {
-          player.e.c = player.e.c.sub(this.cost())
-			  setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
-        },
-		effect(x) {
-eff = x.pow(1.5).times(1.5).max(1)
-		return eff;
-        },
-        style: {
-          width: "80px",
-          height: "80px",
-        },
-      },
-							      12: {
-		title: "<alternate>Berhuvz</alternate>",
-				purchaseLimit: 100,
-        cost(x) {return new Decimal(240).times(x.times(4).max(1)).times(x.pow(0.5).max(1))},
-		canAfford() {return (player.e.uc.gte(this.cost()))},
-        display() {return `<h5>Boost Unommon Shards Gain.<br>Level: ${formatWhole(getBuyableAmount(this.layer, this.id))}/100<br>Cost: ${format(this.cost())} Unommon Shards<br>Effect: x${format(this.effect())}</h5>`},
-        buy() {
-          player.e.uc = player.e.uc.sub(this.cost())
-			  setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
-        },
-		effect(x) {
-eff = x.pow(1.75).times(3).max(1)
-		return eff;
-        },
-        style: {
-          width: "80px",
-          height: "80px",
-        },
-      },
-							      13: {
-		title: "<alternate>Cerzas</alternate>",
-        cost(x) {return new Decimal(1).times(x.add(1))},
-		purchaseLimit: 3,
-		canAfford() {return (player.r.points.gte(this.cost()))},
-        display() {return `<h5>Boost Points Gain.<br>Level: ${formatWhole(getBuyableAmount(this.layer, this.id))}/3<br>Cost: ${format(this.cost())} Runes<br>Effect: x${format(this.effect())}</h5>`},
-        buy() {
-          player.r.points = player.r.points.sub(this.cost())
-			  setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
-        },
-		effect(x) {
-eff = x.pow(2.35).times(3).max(1)
-		return eff;
-        },
-        style: {
-          width: "80px",
-          height: "80px",
-        },
-      },
-							      14: {
-		title: "<alternate>Dolus</alternate>",
-        cost(x) {return new Decimal(1000000).times(x.add(1))},
-				purchaseLimit: 25,
-		canAfford() {return (player.e.uc.gte(this.cost()))},
-        display() {return `<h5>Generate Relic Shards<br>Level: ${formatWhole(getBuyableAmount(this.layer, this.id))}/25<br>Cost: ${format(this.cost())} Uncommon Shards<br>Effect: +${format(this.effect())}/s</h5>`},
-        buy() {
-          player.e.uc = player.e.uc.sub(this.cost())
-			  setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
-        },
-		effect(x) {
-eff = x.times(0.35)
-		return eff;
-        },
-        style: {
-          width: "80px",
-          height: "80px",
-        },
-      },
-							      21: {
-		title: "<alternate>Faaz</alternate>",
-        cost(x) {return new Decimal(365000).times(x.add(1))},
-				purchaseLimit: 7,
-		canAfford() {return (player.e.c.gte(this.cost()))},
-        display() {return `<h5>Boost Legendary Shards gain<br>Level: ${formatWhole(getBuyableAmount(this.layer, this.id))}/7<br>Cost: ${format(this.cost())} Common Shards<br>Effect: x${format(this.effect())}</h5>`},
-        buy() {
-          player.e.c = player.e.c.sub(this.cost())
-			  setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
-        },
-		effect(x) {
-eff = x.times(2).pow(1.15).max(1)
-		return eff;
-        },
-        style: {
-          width: "80px",
-          height: "80px",
-        },
-      },
-							      22: {
-		title: "<alternate>Grakk</alternate>",
-				purchaseLimit: 7,
-        cost(x) {return new Decimal(5).times(x.add(1))},
-		canAfford() {return (player.e.r.gte(this.cost()))},
-        display() {return `<h5>Boost Epic Shards gain<br>Level: ${formatWhole(getBuyableAmount(this.layer, this.id))}/7<br>Cost: ${format(this.cost())} Rare Shards<br>Effect: x${format(this.effect())}</h5>`},
-        buy() {
-          player.e.r = player.e.r.sub(this.cost())
-			  setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
-        },
-		effect(x) {
-eff = x.times(1.45).pow(1.25).max(1)
-		return eff;
-        },
-        style: {
-          width: "80px",
-          height: "80px",
-        },
-      },
-							      23: {
-		title: "<alternate>Staurz</alternate>",
-        cost(x) {return new Decimal(1e23).pow(x.pow(0.25).max(1))},
-				purchaseLimit: 7,
-		canAfford() {return (player.e.points.gte(this.cost()))},
-        display() {return `<h5>Boost essences gain<br>Level: ${formatWhole(getBuyableAmount(this.layer, this.id))}/7<br>Cost: ${format(this.cost())} Essences<br>Effect: x${format(this.effect())}</h5>`},
-        buy() {
-          player.e.points = player.e.points.sub(this.cost())
-			  setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
-        },
-		effect(x) {
-eff = x.times(2.45).pow(1.75).max(1)
-		return eff;
-        },
-        style: {
-          width: "80px",
-          height: "80px",
-        },
-      },
-							      24: {
-		title: "<alternate>Ehvaz</alternate>",
-        cost(x) {return new Decimal(75).pow(x.pow(0.01).max(1))},
-				purchaseLimit: 4,
-		canAfford() {return (player.e.l.gte(this.cost()))},
-        display() {return `<h5>Reduce runes cost<br>Level: ${formatWhole(getBuyableAmount(this.layer, this.id))}/4<br>Cost: ${format(this.cost())} Legendary Shards<br>Effect: /${format(this.effect())}</h5>`},
-        buy() {
-          player.e.l = player.e.l.sub(this.cost())
-			  setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
-        },
-		effect(x) {
-eff = x.times(10.5).pow(20.75).pow(player.r.buyables[31].add(1)).max(1)
-		return eff;
-        },
-        style: {
-          width: "80px",
-          height: "80px",
-        },
-      },
-							      31: {
-		title: "<alternate>Zolos</alternate>",
-        cost(x) {return new Decimal(3).add(x)},
-				purchaseLimit: 2,
-		canAfford() {return (player.r.points.gte(this.cost()) && player.r.buyables[24].gte(4))},
-        display() {return `Req: All maxed Runes <br> Lose all runes and buff Ehvaz. Unlock one row of upgrades<br>Level: ${formatWhole(getBuyableAmount(this.layer, this.id))}/2<br>Cost: ${format(this.cost())} Runes`},
-        buy() {
-          player.r.points = player.r.points.sub(this.cost())
-			  setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
-			  player.r.buyables[11] = new Decimal(0)
-			   player.r.buyables[12] = new Decimal(0)
-			   player.r.buyables[13] = new Decimal(0)
-			   player.r.buyables[14] = new Decimal(0)
-			   player.r.buyables[15] = new Decimal(0)
-			   player.r.buyables[21] = new Decimal(0)
-			   player.r.buyables[22] = new Decimal(0)
-			   player.r.buyables[23] = new Decimal(0)
-			   player.r.buyables[24] = new Decimal(0)
-			   layerDataReset("e")
-        },
-        style: {
-          width: "130px",
-          height: "130px",
-        },
-      },
-},
-upgrades: {
-	11: {
-		title: "Runes I",
-		description: "Zolos boosts Points and Common/Uncommon Shards gain",
-		cost: new Decimal(1),
-		effect() {return new Decimal(5).pow(player.r.buyables[31].times(1.75))},
-		effectDisplay() {return format(upgradeEffect("r", 11)) + "x"},
-	},
-	12: {
-		title: "Runes II",
-		unlocked() {return hasUpgrade("r", 11)},
-		description: "Keep [Essence Purifier] on Runes reset",
-		cost: new Decimal(3),
-	},
-	13: {
-		title: "Runes III",
-		description: "Runes cheapens themselves<br>Req: 2 Zolos",
-		unlocked() {return hasUpgrade("r", 12)},
-		cost: new Decimal(4),
-		canAfford() {return (player.r.buyables[31].gt(1) && player.r.points.gte(4))},
-		effect() {return new Decimal(1e15).pow(player.r.points.pow(1.925))},
-		effectDisplay() {return "/" + format(upgradeEffect("r", 13))},
-	},
-	14: {
-		title: "Runes IV",
-		unlocked() {return hasUpgrade("r", 13)},
-		description: "Unlock new content, and keep Essence upgrades on reset",
-		cost: new Decimal(5),
-	},
-},
     layerShown(){return true}
 })

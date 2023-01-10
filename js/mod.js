@@ -3,7 +3,7 @@ let modInfo = {
 	id: "runic",
 	author: "Seder3214",
 	pointsName: "points",
-	modFiles: ["layers.js", "tree.js"],
+	modFiles: ["layers/essence.js", "layers/runes.js", "layers/artifacts.js", "tree.js"],
 
 	discordName: "",
 	discordLink: "",
@@ -13,12 +13,17 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.2.1",
+	num: "0.3.2",
 	name: "Literally nothing",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-	<br><h3 style='color: #C0C0C0;'>v0.2.1 - Runes</h3><br>
+	<br><h3 style='color: #00CED1;'>v0.3.2 - Artifacts</h3><br>
+			<span style='color: #808080'>- Added new layer<br>
+			- All layers now put on different files</span>
+	<br><h3 style='color: #C0C0C0;'>v0.3 - Runes</h3><br>
+			<span style='color: #808080'>- Finished a layer (Current Endgame: 1e13 Runes)</span>
+	<br><h3 style='color: #C0C0C0;'>v0.2.1</h3><br>
 			<span style='color: #808080'>- Added 4 more runes<br>
 			- Added upgrades<br></span>
 	<h3 style='color: #C0C0C0;'>v0.1.3</h3><br>
@@ -50,11 +55,14 @@ function getPointGen() {
 		return new Decimal(0)
 
 	let gain = new Decimal(0.05)
+	if (player.a.points.gte(1)) gain = gain.times(20)
+		if (player.e.buyables[12].gte(1)) gain = gain.times(buyableEffect("e", 12))
 	if (player.e.buyables[11].gte(1)) gain = gain.times(buyableEffect("e", 11))
 	if (player.e.c.gte(1)) gain = gain.times(player.e.c.add(1).pow(0.65))
 	if (player.e.l.gte(1)) gain = gain.times(player.e.l.add(1).times(2.35))
 	if (player.r.buyables[13].gte(1)) gain = gain.times(buyableEffect("r", 13))
 		if (hasUpgrade("r", 11)) gain = gain.times(upgradeEffect("r", 11))
+		if (hasUpgrade("e", 32)) gain = gain.times(upgradeEffect("e", 32))
 	return gain
 }
 // You can add non-layer related variables that should to into "player" and be saved here, along with default values
