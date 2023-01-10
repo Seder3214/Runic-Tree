@@ -279,7 +279,7 @@ upgrades: {
 			if (hasUpgrade("e", 41)) return new Decimal(3)
 			else return new Decimal(2)},
 				effectDisplay() {return "+" + format(upgradeEffect("e", 41))},
-		unlocked() {return (hasUpgrade("e", 41))},
+		unlocked() {return (hasUpgrade("e", 32))},
 		        style: {
           width: "160px",
 		  'border-radius': '5%',
@@ -303,7 +303,7 @@ upgrades: {
         },
 },
 	43: {
-		title: "Essence XV",
+		title: "Essence XVI",
 		description: "Increase purchase limit of [Essence Extractor] by 25",
 		cost: new Decimal(1e90),
 		effect() {if (hasUpgrade("e", 43)) return new Decimal(25)},
