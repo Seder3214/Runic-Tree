@@ -13,12 +13,16 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.3.2",
+	num: "0.3.3",
 	name: "Literally nothing",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-	<br><h3 style='color: #00CED1;'>v0.3.2 - Artifacts</h3><br>
+	<br><h3 style='color: #00CED1;'>v0.3.3 - Artifacts</h3><br>
+			<span style='color: #808080'>- Added new layer<br>
+			- All layers now put on different files
+			- Fixed early unlocking of rune upgrades</span>
+	<br><h3 style='color: #00CED1;'>v0.3.2</h3><br>
 			<span style='color: #808080'>- Added new layer<br>
 			- All layers now put on different files</span>
 	<br><h3 style='color: #C0C0C0;'>v0.3 - Runes</h3><br>

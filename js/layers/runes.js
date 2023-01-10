@@ -241,6 +241,7 @@ upgrades: {
 		title: "Runes I",
 		description: "Zolos boosts Points and Common/Uncommon Shards gain",
 		cost: new Decimal(1),
+				unlocked() {return player.r.buyables[21].gte(1)},
 		effect() {return new Decimal(5).pow(player.r.buyables[31].times(1.75))},
 		effectDisplay() {return format(upgradeEffect("r", 11)) + "x"},
 	},
