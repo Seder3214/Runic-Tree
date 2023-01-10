@@ -51,7 +51,6 @@ addLayer("a", {
 	},
 	doReset() {
 		layerDataReset("e")
-				layerDataReset("r")
 	},
     layerShown(){return (player.r.points.gte(1e13) || player[this.layer].unlocked)}
 })
