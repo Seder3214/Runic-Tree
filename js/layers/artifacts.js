@@ -49,8 +49,5 @@ addLayer("a", {
             },
 	},
 	},
-	doReset() {
-		layerDataReset("e")
-	},
     layerShown(){return (player.r.points.gte(1e11) || player[this.layer].unlocked)}
 })
