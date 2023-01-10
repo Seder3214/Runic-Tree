@@ -20,7 +20,7 @@ let VERSION = {
 let changelog = `<h1>Changelog:</h1><br>
 	<br><h3 style='color: #00CED1;'>v0.3.3 - Artifacts</h3><br>
 			<span style='color: #808080'>- Added new layer<br>
-			- All layers now put on different files
+			- All layers now put on different files<br>
 			- Fixed early unlocking of rune upgrades</span>
 	<br><h3 style='color: #00CED1;'>v0.3.2</h3><br>
 			<span style='color: #808080'>- Added new layer<br>
