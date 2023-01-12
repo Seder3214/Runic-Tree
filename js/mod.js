@@ -88,7 +88,7 @@ function(){return "Current endgame: 2 artifact slots"},
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.a.points.gte(2))
+	return player.a.points.gte(2)
 }
 
 
