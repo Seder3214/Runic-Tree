@@ -33,6 +33,8 @@ addLayer("e", {
     exponent: 0.5, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
+				if (hasUpgrade(this.layer, 53)) mult = mult.times(upgradeEffect(this.layer, 53))
+		if (hasUpgrade(this.layer, 52)) mult = mult.times(upgradeEffect(this.layer, 52))
 				if (hasUpgrade("e", 31)) mult = mult.times(upgradeEffect("e", 31))
 		if (hasUpgrade("r", 22)) mult = mult.times(upgradeEffect("r", 22))
 				if (hasUpgrade("r", 21)) mult = mult.times(upgradeEffect("r", 21))
@@ -41,6 +43,10 @@ addLayer("e", {
 			if (player.e.uc.gte(1)) mult = mult.times(player.e.uc.times(1.05).max(1))
 			if (player.e.e.gte(1)) mult = mult.times(player.e.e.times(1.75).max(1))
 				if (player.r.buyables[23].gte(1)) mult = mult.times(buyableEffect("r", 23))
+								if (player.a.firstAEE > 1) mult = mult.times(player.a.firstAEE).times(tmp.a.effect)
+					if (player.a.firstAEEE > 1) mult = mult.pow(player.a.firstAEEE).times(tmp.a.effect)
+												if (player.a.scndAEE > 1) mult = mult.times(player.a.scndAEE).times(tmp.a.effect)
+					if (player.a.scndAEEE > 1) mult = mult.pow(player.a.scndAEEE).times(tmp.a.effect)
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -71,7 +77,7 @@ addLayer("e", {
                     ["blank", "15px"],
 					 ["upgrades", [1,2]], 
 					 ["row", [["buyables", [2]], ["upgrades", [3]]]],
-					 ["upgrades", [4]], 
+					 ["upgrades", [4,5]], 
 					                 ["blank", "15px"],
                 ]
             },
@@ -392,6 +398,96 @@ upgrades: {
           'width': "160px",
 		  'border-radius': '5%',
           'min-height': "100px",
+		  		  'margin-left': '20px',
+				"background-color": 'gray',
+								'color': "white"}
+        },
+},
+	51: {
+		title: "Essence XVII",
+		description: "Boost Mana gain by Buyed Essence upgrades",
+		cost: new Decimal(1e100),
+		effect() {if (hasUpgrade("e", 51)) ret = Decimal.pow(1.11, player.e.upgrades.length)
+			else ret = new Decimal(1)
+			return ret},
+				effectDisplay() {return "+" + format(upgradeEffect("e", 51))},
+		unlocked() {return (hasUpgrade("e", 43))},
+		        style() {
+					if (hasUpgrade("e", 51) || player.e.points.gte(this.cost)) return {
+						          'width': "160px",
+		  'border-radius': '5%',
+          'min-height': "100px",
+		  				"border-color": 'rgb(69, 103, 56)',
+		  		  'margin-left': '20px',
+				  		  		  'margin-top': '17px',
+				"background-color": 'black',
+								'color': "white"
+					}
+					else return {
+          'width': "160px",
+		  'border-radius': '5%',
+          'min-height': "100px",
+		  		  		  'margin-top': '17px',
+		  		  'margin-left': '20px',
+				"background-color": 'gray',
+								'color': "white"}
+        },
+},
+	52: {
+		title: "Essence XVIII",
+		description: "Mana boosts essence gain",
+		cost: new Decimal(1e120),
+		effect() { if (hasUpgrade(this.layer, this.id)) return player.al.points.pow(1.25).max(1)
+			else return new Decimal(1)
+			return ret},
+				effectDisplay() {return "x" + format(upgradeEffect("e", 52))},
+		unlocked() {return (hasUpgrade("e", 51))},
+		        style() {
+					if (hasUpgrade("e", 52) || player.e.points.gte(this.cost)) return {
+						          'width': "160px",
+		  'border-radius': '5%',
+          'min-height': "100px",
+		  				"border-color": 'rgb(69, 103, 56)',
+		  		  'margin-left': '20px',
+				  		  		  'margin-top': '17px',
+				"background-color": 'black',
+								'color': "white"
+					}
+					else return {
+          'width': "160px",
+		  'border-radius': '5%',
+          'min-height': "100px",
+		  		  		  'margin-top': '17px',
+		  		  'margin-left': '20px',
+				"background-color": 'gray',
+								'color': "white"}
+        },
+},
+	53: {
+		title: "Essence XIX",
+		description: "Points boosts essences gain",
+		cost: new Decimal(1e130),
+		effect() { if (hasUpgrade(this.layer, this.id)) return player.points.pow(0.05).max(1)
+			else return new Decimal(1)
+			return ret},
+				effectDisplay() {return "x" + format(upgradeEffect("e", 53))},
+		unlocked() {return (hasUpgrade("e", 52))},
+		        style() {
+					if (hasUpgrade("e", 52) || player.e.points.gte(this.cost)) return {
+						          'width': "160px",
+		  'border-radius': '5%',
+          'min-height': "100px",
+		  				"border-color": 'rgb(69, 103, 56)',
+		  		  'margin-left': '20px',
+				  		  		  'margin-top': '17px',
+				"background-color": 'black',
+								'color': "white"
+					}
+					else return {
+          'width': "160px",
+		  'border-radius': '5%',
+          'min-height': "100px",
+		  		  		  'margin-top': '17px',
 		  		  'margin-left': '20px',
 				"background-color": 'gray',
 								'color': "white"}

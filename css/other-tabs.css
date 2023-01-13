@@ -18,6 +18,17 @@ bottom: 0;
 	position: absolute;
 	    text-shadow: 0 0 10px #222034;
 }
+.inventoryHandler {
+	display: inline-block;
+	font-size: 12px;
+	width: 320px;
+	height: 80px;
+	margin: 5px;
+	border: 2px solid rgba(0, 0, 0, 0.125);
+	box-shadow: 0 0 5px black;
+	border-radius: 5px;
+	position: relative;
+}
 #info {
     font-size: 20px;
     color: white;

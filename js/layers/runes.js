@@ -286,7 +286,10 @@ upgrades: {
 		title: "Runes VII",
 		unlocked() {return hasUpgrade("r", 21)},
 		description: "Buyed upgrades boosts essence gain",
-		effect() {
+		effect() {if (player.a.scndAREE > 1) eff = Decimal.pow(2, player.r.upgrades.length).times(upgradeEffect("r", 23)).times(Decimal.pow(2, upgradeEffect("e", 41).add(1))).times(player.a.firstARE).pow(player.a.firstAREE).times(tmp.a.scndARE).pow(tmp.a.scndAREE).times(tmp.a.effect2).times(tmp.a.effect)
+						if (player.a.scndARE > 1) eff = Decimal.pow(2, player.r.upgrades.length).times(upgradeEffect("r", 23)).times(Decimal.pow(2, upgradeEffect("e", 41).add(1))).times(player.a.firstARE.times(tmp.a.effect)).pow(player.a.firstAREE).times(player.a.scndARE).times(tmp.a.effect).times(tmp.a.effect2)
+			if (player.a.firstAREE > 1) eff = Decimal.pow(2, player.r.upgrades.length).times(upgradeEffect("r", 23)).times(Decimal.pow(2, upgradeEffect("e", 41).add(1))).times(player.a.firstARE).pow(player.a.firstAREE).times(tmp.a.effect)
+			if (player.a.firstARE > 1) eff = Decimal.pow(2, player.r.upgrades.length).times(upgradeEffect("r", 23)).times(Decimal.pow(2, upgradeEffect("e", 41).add(1))).times(player.a.firstARE).times(tmp.a.effect)
 			if (hasUpgrade("r", 23)) eff = Decimal.pow(2, player.r.upgrades.length).times(upgradeEffect("r", 23)).times(Decimal.pow(2, upgradeEffect("e", 41).add(1)))
 			else eff = Decimal.pow(2, player.r.upgrades.length)
 		return eff;},

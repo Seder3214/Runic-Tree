@@ -3,7 +3,7 @@ let modInfo = {
 	id: "runic",
 	author: "Seder3214",
 	pointsName: "points",
-	modFiles: ["layers/essence.js", "layers/runes.js", "layers/artifacts.js", "tree.js"],
+	modFiles: ["layers/essence.js", "layers/runes.js", "layers/artifacts.js", "tree.js", "layers/altar.js"],
 
 	discordName: "",
 	discordLink: "",
@@ -13,11 +13,14 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.3.8",
+	num: "0.4.1",
 	name: "Literally nothing",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+	<br><h3 style='color: #00CED1;'>v0.4.1 - Artifacts</h3><br>
+			<span style='color: #808080'>- Added artifacts system<br>
+			- More essences upgrades</span>
 	<br><h3 style='color: #456738;'>v0.3.8 - CSS</h3><br>
 			<span style='color: #808080'>- Added more CSS styling</span>
 	<br><h3 style='color: #00CED1;'>v0.3.7 - Artifacts</h3><br>
@@ -79,6 +82,13 @@ function getPointGen() {
 	if (player.r.buyables[13].gte(1)) gain = gain.times(buyableEffect("r", 13))
 		if (hasUpgrade("r", 11)) gain = gain.times(upgradeEffect("r", 11))
 		if (hasUpgrade("e", 32)) gain = gain.times(upgradeEffect("e", 32))
+					if (player.a.scndAPEE > 1) gain = gain.pow(player.a.scndAPEE)
+					if (player.a.scndAPE > 1) gain = gain.times(player.a.scndAPE)
+						if (player.a.firstAPEE > 1) gain = gain.pow(player.a.firstAPEE)
+							if (player.a.firstAPE > 1) gain = gain.times(player.a.firstAPE)
+								if (tmp.a.effect.gte(1)) gain = gain.times(tmp.a.effect)
+								if (tmp.a.effect.gte(2)) gain = gain.times(tmp.a.effect2)
+		
 	return gain
 }
 // You can add non-layer related variables that should to into "player" and be saved here, along with default values
@@ -87,13 +97,13 @@ function addedPlayerData() { return {
 
 // Display extra things at the top of the page
 var displayThings = [
-function(){return "Current endgame: 2 artifact slots"},
+function(){return "Current endgame: 1e145 Essences"},
 ]
 
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.a.points.gte(2)
+	return player.e.points.gte(1e145)
 }
 
 
