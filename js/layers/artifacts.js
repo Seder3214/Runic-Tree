@@ -61,8 +61,8 @@ onClick() {
 	let rarityRandom = Math.random() * (1 - 1) + (1);
 			if (rarityRandom >= 1) rarityRandom = Math.random() * (2.2 - 1.8) + (1.8);
 		if (rarityRandom >= 2) rarityRandom = Math.random() * (3.2 - 2.7) + (2.7);
-		if (rarityRandom >= 2.7) rarityRandom = Math.random() * (4.2 - 3.6) + (3.6);
-		if (rarityRandom >= 3.8) rarityRandom = Math.random() * (5.2 - 4.5) + (4.5);
+		if (rarityRandom >= 3) rarityRandom = Math.random() * (4.2 - 3.6) + (3.6);
+		if (rarityRandom >= 3.9) rarityRandom = Math.random() * (5.2 - 4.5) + (4.5);
 		if (rarityRandom >= 4.9) rarityRandom = Math.random() * (6.2 - 5.4) + (5.4);
 return player.a.RarityText = rarityRandom
 },

@@ -278,7 +278,7 @@ upgrades: {
 		title: "Runes VI",
 		unlocked() {return hasUpgrade("r", 15)},
 		description: "Unspent Runes boosts essence gain",
-		effect() {return player.r.points.pow(0.85)},
+		effect() {return player.r.points.pow(0.85).max(1)},
 		effectDisplay() {return "x" + format(upgradeEffect("r",21))},
 		cost: new Decimal(169),
 	},
@@ -287,7 +287,7 @@ upgrades: {
 		unlocked() {return hasUpgrade("r", 21)},
 		description: "Buyed upgrades boosts essence gain",
 		effect() {
-			if (hasUpgrade("r", 23)) eff = Decimal.pow(2, player.r.upgrades.length).times(upgradeEffect("r", 23)).times(Decimal.pow(2, upgradeEffect("e", 41)))
+			if (hasUpgrade("r", 23)) eff = Decimal.pow(2, player.r.upgrades.length).times(upgradeEffect("r", 23)).times(Decimal.pow(2, upgradeEffect("e", 41).add(1)))
 			else eff = Decimal.pow(2, player.r.upgrades.length)
 		return eff;},
 		effectDisplay() {return "x" + format(upgradeEffect("r",22))},

@@ -19,7 +19,12 @@ addLayer("e", {
 		ra: new Decimal(1),
 		r2a: new Decimal(1),
     }},
-    color: "#452d35",
+    color() {if (player.e.buyables[11].gte(75)) return "#456738"
+		if (player.e.buyables[11].gte(55)) return "#454e38"
+		if (player.e.buyables[11].gte(40)) return "#454638"
+		if (player.e.buyables[11].gte(25)) return "#453f38"
+		if (player.e.buyables[11].gte(10)) return "#452d4e"
+		else return "#452d35"},
     requires: new Decimal(8250), // Can be a function that takes requirement increases into account
     resource: "essence", // Name of prestige currency
     baseResource: "points", // Name of resource prestige is based on
@@ -131,7 +136,7 @@ eff = new Decimal(120).times(x.add(1).pow(2.35))
       },
 	  	21: {
 		title: "Essence X",
-		 cost(x) {return new Decimal(1e40).times(new Decimal(45000).times(x.times(x).pow(5.25).max(0.5)).pow(x.sub(7).max(1)))},
+		 cost(x) {return new Decimal(1e38).times(new Decimal(45000).times(x.times(x).pow(5.25).max(0.5)).pow(x.sub(7.7).max(1)))},
         display() { return `Increase [Essence Purifier] softcap.<br>Cost: ${format(this.cost())} essences<br>Currently: ^${format(this.effect())}`},
 		effect(x) {eff = new Decimal(1.05).pow(x)
 	 eff = softcap(eff, new Decimal(1.1), new Decimal(0.1))
@@ -141,10 +146,23 @@ eff = new Decimal(120).times(x.add(1).pow(2.35))
           player.e.points = player.e.points.sub(this.cost())
 			  setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
         },
-        style: {
-          width: "160px",
+		style() {
+					if (player.e.points.gte(this.cost()) || player.e.buyables[this.id].gte(1)) return {
+						          'width': "160px",
 		  'border-radius': '5%',
-          height: "100px",
+          'height': "100px",
+		  		  'margin-left': '13px',
+				"background-color": 'black',
+								"border-color": 'rgb(69, 103, 56)',
+				'color': "white",
+					}
+					else return {
+          'width': "160px",
+		  'border-radius': '5%',
+		            'height': "100px",
+		  		  'margin-left': '13px',
+				"background-color": 'gray',
+								'color': "white"}
         },
 		unlocked() {return hasUpgrade("r", 14)},
 },
@@ -246,12 +264,25 @@ upgrades: {
 		return effect},
 				effectDisplay() {return "x" + format(upgradeEffect("e", 31))},
 		unlocked() {return (hasUpgrade("r", 23))},
-		        style: {
-          width: "160px",
+		style() {
+					if (hasUpgrade("e", 31) || player.e.points.gte(this.cost)) return {
+						          'width': "160px",
 		  'border-radius': '5%',
           'min-height': "100px",
-		  'margin-top': '18px',
-		  'margin-left': '5px',
+		  'margin-top': '17px',
+		  		  'margin-left': '13px',
+				"background-color": 'black',
+				"border-color": 'rgb(69, 103, 56)',
+								'color': "white"
+					}
+					else return {
+          'width': "160px",
+		  'border-radius': '5%',
+          'min-height': "100px",
+		  'margin-top': '17px',
+		  		  'margin-left': '13px',
+				"background-color": 'gray',
+								'color': "white"}
         },
 },
 	32: {
@@ -262,12 +293,25 @@ upgrades: {
 		return effect},
 				effectDisplay() {return "x" + format(upgradeEffect("e", 32))},
 		unlocked() {return (hasUpgrade("e", 31))},
-		        style: {
-          width: "160px",
+		style() {
+					if (hasUpgrade("e", 32) || player.e.points.gte(this.cost)) return {
+						          'width': "160px",
 		  'border-radius': '5%',
           'min-height': "100px",
-		  'margin-top': '18px',
-		  'margin-left': '13px',
+		  		  'margin-left': '20px',
+				  		  'margin-top': '17px',
+				"background-color": 'black',
+								"border-color": 'rgb(69, 103, 56)',
+								'color': "white"
+					}
+					else return {
+          'width': "160px",
+		  'border-radius': '5%',
+          'min-height': "100px",
+		  		  'margin-top': '17px',
+		  		  'margin-left': '20px',
+				"background-color": 'gray',
+								'color': "white"}
         },
 },
 	41: {
@@ -277,14 +321,28 @@ upgrades: {
 		effect() {if (hasUpgrade("e", 43)) return new Decimal(5)
 			if (hasUpgrade("e", 42)) return new Decimal(4)
 			if (hasUpgrade("e", 41)) return new Decimal(3)
-			else return new Decimal(2)},
+				if (hasUpgrade("e", 32)) return new Decimal(2)
+					if (hasUpgrade("e", 31)) return new Decimal(1)
+			else return new Decimal(0)},
 				effectDisplay() {return "+" + format(upgradeEffect("e", 41))},
 		unlocked() {return (hasUpgrade("e", 32))},
-		        style: {
-          width: "160px",
+		style() {
+					if (hasUpgrade("e", 42) || player.e.points.gte(this.cost)) return {
+						          'width': "160px",
 		  'border-radius': '5%',
           'min-height': "100px",
-		  'margin-bottom': '13px',
+		  		  'margin-left': '20px',
+				  				"border-color": 'rgb(69, 103, 56)',
+				"background-color": 'black',
+						'color': "white"
+					}
+					else return {
+          'width': "160px",
+		  'border-radius': '5%',
+          'min-height': "100px",
+		  		  'margin-left': '20px',
+				"background-color": 'gray',
+					'color': "white"}
         },
 },
 	42: {
@@ -294,12 +352,23 @@ upgrades: {
 		effect() {if (hasUpgrade("e", 42)) return new Decimal(75)},
 				effectDisplay() {return "+" + format(upgradeEffect("e", 42))},
 		unlocked() {return (hasUpgrade("e", 41))},
-		        style: {
-          width: "160px",
+		        style() {
+					if (hasUpgrade("e", 42) || player.e.points.gte(this.cost)) return {
+						          'width': "160px",
 		  'border-radius': '5%',
           'min-height': "100px",
-		  'margin-bottom': '13px',
-		  		  'margin-left': '13px',
+		  				"border-color": 'rgb(69, 103, 56)',
+		  		  'margin-left': '20px',
+				"background-color": 'black',
+								'color': "white"
+					}
+					else return {
+          'width': "160px",
+		  'border-radius': '5%',
+          'min-height': "100px",
+		  		  'margin-left': '20px',
+				"background-color": 'gray',
+								'color': "white"}
         },
 },
 	43: {
@@ -309,12 +378,23 @@ upgrades: {
 		effect() {if (hasUpgrade("e", 43)) return new Decimal(25)},
 				effectDisplay() {return "+" + format(upgradeEffect("e", 43))},
 		unlocked() {return (hasUpgrade("e", 42))},
-		        style: {
-          width: "160px",
+		        style() {
+					if (hasUpgrade("e", 43) || player.e.points.gte(this.cost)) return {
+						          'width': "160px",
 		  'border-radius': '5%',
           'min-height': "100px",
-		  'margin-bottom': '13px',
-		  		  'margin-left': '13px',
+		  				"border-color": 'rgb(69, 103, 56)',
+		  		  'margin-left': '20px',
+				"background-color": 'black',
+								'color': "white"
+					}
+					else return {
+          'width': "160px",
+		  'border-radius': '5%',
+          'min-height': "100px",
+		  		  'margin-left': '20px',
+				"background-color": 'gray',
+								'color': "white"}
         },
 },
 },
