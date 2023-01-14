@@ -13,13 +13,14 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.4.2.1",
+	num: "0.4.2.2",
 	name: "Literally nothing",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-	<br><h3 style='color: #00CED1;'>v0.4.2.1 - Artifacts</h3><br>
-			<span style='color: #808080'>- Changed some descritions of upgrades/clickables</span>
+	<br><h3 style='color: #00CED1;'>v0.4.2.2 - Artifacts</h3><br>
+			<span style='color: #808080'> - Increased Weak Artifact mana gain<br>
+			- Changed some descritions of upgrades/clickables</span>
 	<br><h3 style='color: #00CED1;'>v0.4.1</h3><br>
 			<span style='color: #808080'>- Added artifacts system<br>
 			- More essences upgrades</span>

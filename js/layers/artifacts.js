@@ -243,7 +243,7 @@ eEffect = Math.random() * (108 - 75) + (75),
 			if (rarityRandom == 4) alEffect = Math.random() * (42 - 27) + (27);
 			if (rarityRandom == 3) alEffect = Math.random() * (23 - 10) + (10);
 			if (rarityRandom == 2) alEffect = Math.random() * (7.2 - 3) + (3);
-	if (rarityRandom == 1) alEffect = Math.random() * (2.6 - 0.5) + (0.5);
+	if (rarityRandom == 1) alEffect = Math.random() * (2.6 - 1) + (1);
 		player.a.rarityEffect = Math.floor(rarityEffect)
 		  player.a.RarityText = Math.floor(rarityRandom)
 		  player.a.paF = pEffect
@@ -375,7 +375,7 @@ body(){if (player.a.fRarity >= 6) return "Artifact 1<br>" + "<h3 style='color: #
 		if (player.a.fRarity >= 4) return "Artifact 1<br>" + "<h3 style='color: #8A2BE2;'>Omniscient Boosting Artifact</h3><sup>+" + formatWhole(player.a.buyables[11]) + "</sup>" + " Characteristics:<br> x" + format(player.a.firstAPE) + "(" + format(tmp.a.effect) + ") to points<br> x" + format(player.a.firstAEE) + "(" + format(tmp.a.effect) + ") to essences<br> x" + format(player.a.firstARE) + "(" + format(tmp.a.effect) + ") to Runes VII<br> ^" + format(player.a.firstAPEE) + "(" + format(tmp.a.effect.div(5).max(1)) + ") to points<br> +" + format(player.a.alEffect) + "(" + format(tmp.a.effect) + ") Mana on its Reset"
 		if (player.a.fRarity >=3) return "Artifact 1<br>" + "<h3 style='color: #7FFF00;'>Strong Boosting Artifact</h3><sup>+" + formatWhole(player.a.buyables[11]) + "</sup>" + " Characteristics:<br> x" + format(player.a.firstAPE) + "(" + format(tmp.a.effect) + ") to points<br> x" + format(player.a.firstAEE) + "(" + format(tmp.a.effect) + ") to essences<br> x" + format(player.a.firstARE) + "(" + format(tmp.a.effect) + ") to Runes VII<br> +" + format(player.a.alEffect) + "(" + format(tmp.a.effect.div(5).max(1)) + ") Mana on its Reset"
 		if (player.a.fRarity >=2) return "Artifact 1<br>" + "<h3 style='color: #1E90FF;'>Hardened Boosting Artifact</h3><sup>+" + formatWhole(player.a.buyables[11]) + "</sup>" + " Characteristics:<br> x" + format(player.a.firstAPE) + "(" + format(tmp.a.effect) + ") to points<br> x" + format(player.a.firstAEE) + "(" + format(tmp.a.effect) + ") to essences<br> +" + format(player.a.alEffect) + "(" + format(tmp.a.effect.div(5)) + ") Mana on its Reset"
-		if (player.a.fRarity >=1) return "Artifact 1<br>" + "<h3 style='color: #383838;'>Weak Boosting Artifact</h3><sup>+" + formatWhole(player.a.buyables[11]) + "</sup>" + " Characteristics:<br> x" + format(player.a.firstAPE) + "(" + format(tmp.a.effect) + ") to points<br> +" + format(player.a.alEffect) + "(" + format(tmp.a.effect) + ") Mana on its Reset"	
+		if (player.a.fRarity >=1) return "Artifact 1<br>" + "<h3 style='color: #383838;'>Weak Boosting Artifact</h3><sup>+" + formatWhole(player.a.buyables[11]) + "</sup>" + " Characteristics:<br> x" + format(player.a.firstAPE) + "(" + format(tmp.a.effect) + ") to points<br> +" + format(player.a.alEffect) + "(" + format(tmp.a.effect.div(5)) + ") Mana on its Reset"	
 else return "Artifact Information<br>You have not created any Artifact right now!"},
 style: {
 			'border-radius': '0%',
