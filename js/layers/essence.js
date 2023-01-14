@@ -497,7 +497,7 @@ upgrades: {
 clickables: {
     11: {
 		title: "Novice Lootbox",
-        display() { return "Contains Common and Uncommon Essence Shards.<br> Cost: 100000 Essences<br> Avaiable: " + formatWhole(player.e.na)},
+        display() { return "Contains Common and Uncommon Essence Shards.<br> Cost: 100000 Essences<br> Available: " + formatWhole(player.e.na)},
 		canClick() { return (player.e.points.gte(100000) && player.e.na.gt(0)) },
 onClick() {
 roll = Math.random() * (2.9 - 1) + (1); 
@@ -510,7 +510,7 @@ if (player.e.d == 2) player.e.uc = player.e.uc.add(new Decimal(1).times(buyableE
 },
     12: {
 		title: "Silver Lootbox",
-        display() { return "Contains Common, Uncommon and Rare Essence Shards.<br> Cost: 38000000 Essences<br>Avaiable: " + formatWhole(player.e.sa)},
+        display() { return "Contains Common, Uncommon and Rare Essence Shards.<br> Cost: 38000000 Essences<br>Available: " + formatWhole(player.e.sa)},
 		canClick() { return (player.e.points.gte(38000000)&& player.e.sa.gt(0)) },
 onClick() {
 roll = Math.random() * (3.9 - 1) + (1); 
@@ -524,7 +524,7 @@ player.e.sa = player.e.sa.sub(1)
 },
     13: {
 		title: "Golden Lootbox",
-        display() { return "Contains Epic and Legendary Essence Shards.<br> Cost: 1e9 Essences<br>Avaiable: " + formatWhole(player.e.ga)},
+        display() { return "Contains Epic and Legendary Essence Shards.<br> Cost: 1e9 Essences<br>Available: " + formatWhole(player.e.ga)},
 		canClick() { return (player.e.points.gte(1e9)&& player.e.ga.gt(0)) },
 onClick() {
 roll = Math.random() * (2.9 - 1) + (1); 

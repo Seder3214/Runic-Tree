@@ -18,7 +18,9 @@ let VERSION = {
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-	<br><h3 style='color: #00CED1;'>v0.4.1 - Artifacts</h3><br>
+	<br><h3 style='color: #00CED1;'>v0.4.2.1 - Artifacts</h3><br>
+			<span style='color: #808080'>- Changed some descritions of upgrades/clickables</span>
+	<br><h3 style='color: #00CED1;'>v0.4.1</h3><br>
 			<span style='color: #808080'>- Added artifacts system<br>
 			- More essences upgrades</span>
 	<br><h3 style='color: #456738;'>v0.3.8 - CSS</h3><br>
