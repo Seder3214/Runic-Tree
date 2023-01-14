@@ -16,8 +16,8 @@ addLayer("al", {
     exponent() {return new Decimal(0.01)},
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
-		if (player.a.alEffect >= 1) mult = mult.times(player.a.alEffect)
 			if (hasUpgrade("e", 51)) mult = mult.times(upgradeEffect("e", 51))
+						if (player.a.alEffect >= 1) mult = mult.times(player.a.alEffect).times(tmp.a.effect.div(5))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses

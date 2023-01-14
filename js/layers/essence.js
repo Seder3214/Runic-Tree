@@ -258,7 +258,7 @@ upgrades: {
 },
 	25: {
 		title: "Essence XI",
-		description: "Change Runes cost exponent and change its style to normal.",
+		description: "Change Runes cost exponent and cost doesnt scales by Runes amount",
 		cost: new Decimal(1e50),
 		unlocked() {return (player.e.buyables[21].gte(1))},
 },
