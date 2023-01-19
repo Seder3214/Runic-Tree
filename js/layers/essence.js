@@ -25,7 +25,8 @@ addLayer("e", {
 		if (player.e.buyables[11].gte(25)) return "#453f38"
 		if (player.e.buyables[11].gte(10)) return "#452d4e"
 		else return "#452d35"},
-    requires: new Decimal(8250), // Can be a function that takes requirement increases into account
+    requires: new Decimal(8250),
+	effectDescription() {if (player.e.points.gte(Decimal.pow(1e2880))) return "Essences will be softcapped after 1e2880"}, // Can be a function that takes requirement increases into account
     resource: "essence", // Name of prestige currency
     baseResource: "points", // Name of resource prestige is based on
     baseAmount() {return player.points}, // Get the current amount of baseResource
@@ -45,8 +46,15 @@ addLayer("e", {
 				if (player.r.buyables[23].gte(1)) mult = mult.times(buyableEffect("r", 23))
 								if (player.a.firstAEE > 1) mult = mult.times(player.a.firstAEE).times(tmp.a.effect)
 					if (player.a.firstAEEE > 1) mult = mult.pow(player.a.firstAEEE).times(tmp.a.effect)
-												if (player.a.scndAEE > 1) mult = mult.times(player.a.scndAEE).times(tmp.a.effect)
-					if (player.a.scndAEEE > 1) mult = mult.pow(player.a.scndAEEE).times(tmp.a.effect)
+												if (player.a.scndAEE > 1) mult = mult.times(player.a.scndAEE).times(tmp.a.effect2)
+					if (player.a.scndAEEE > 1) mult = mult.pow(player.a.scndAEEE).times(tmp.a.effect2)
+					if (player.a.thrdAEE > 1) mult = mult.times(player.a.thrdAEE).times(tmp.a.effect3)
+					if (player.a.thrdAEEE > 1) mult = mult.pow(player.a.thrdAEEE).times(tmp.a.effect3)
+					if (player.a.frthAEE > 1) mult = mult.times(player.a.frthAEE).times(tmp.a.effect4)
+					if (player.a.frthAEEE > 1) mult = mult.pow(player.a.frthAEEE).times(tmp.a.effect4)
+					if (hasUpgrade("al", 32)) mult = mult.times(upgradeEffect("al", 32))
+					if (player.al.buyables[11].gte(1)) mult = mult.times(buyableEffect("al", 11))
+					if (player.e.points.gte(Decimal.pow(10, 2880))) mult = softcap(mult, Decimal.pow(10, 2880), new Decimal(0.00001))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -77,7 +85,7 @@ addLayer("e", {
                     ["blank", "15px"],
 					 ["upgrades", [1,2]], 
 					 ["row", [["buyables", [2]], ["upgrades", [3]]]],
-					 ["upgrades", [4,5]], 
+					 ["upgrades", [4,5,6,7]], 
 					                 ["blank", "15px"],
                 ]
             },
@@ -142,9 +150,10 @@ eff = new Decimal(120).times(x.add(1).pow(2.35))
       },
 	  	21: {
 		title: "Essence X",
+		purchaseLimit: 50,
 		 cost(x) {return new Decimal(1e38).times(new Decimal(45000).times(x.times(x).pow(5.25).max(0.5)).pow(x.sub(7.7).max(1)))},
-        display() { return `Increase [Essence Purifier] softcap.<br>Cost: ${format(this.cost())} essences<br>Currently: ^${format(this.effect())}`},
-		effect(x) {eff = new Decimal(1.05).pow(x)
+        display() { return `Increase [Essence Purifier] softcap.<br>Cost: ${format(this.cost())} essences<br>Currently: ^${format(this.effect(),3)}`},
+		effect(x) {eff = new Decimal(1.05).pow(x).times(upgradeEffect("al", 12)).times(upgradeEffect("al", 13))
 	 eff = softcap(eff, new Decimal(1.1), new Decimal(0.1))
 	 return eff;},
 				canAfford() {return (player.e.points.gte(this.cost()))},
@@ -159,6 +168,8 @@ eff = new Decimal(120).times(x.add(1).pow(2.35))
           'height': "100px",
 		  		  'margin-left': '13px',
 				"background-color": 'black',
+				   'background-image': 'repeating-linear-gradient(-45deg, rgb(0, 0, 0), 10%, rgb(34, 34, 34) 10%, rgb(34, 34, 34) 20%)',
+				'animation': '2000ms linear 0s infinite running true',
 								"border-color": 'rgb(69, 103, 56)',
 				'color': "white",
 					}
@@ -179,8 +190,10 @@ upgrades: {
 		description: "Points boosts [Essence purifier] effect",
 		cost: new Decimal(10),
 		unlocked() {return player.e.buyables[11].gte(5)},
-		effect() {if (hasUpgrade(this.layer, 11)) return player.points.pow(0.1).max(1)
-			else return 1},
+		effect() {if (hasUpgrade(this.layer, 11)) eff = player.points.pow(0.1).max(1)
+			else eff = new Decimal(1)
+			eff = softcap(eff, new Decimal(1e70), new Decimal(0.15))
+		return eff;},
 		effectDisplay() {return format(upgradeEffect("e", 11)) + "x"},
             currencyDisplayName: "points",
             currencyInternalName: "points",
@@ -436,9 +449,10 @@ upgrades: {
 	52: {
 		title: "Essence XVIII",
 		description: "Mana boosts essence gain",
-		cost: new Decimal(1e120),
-		effect() { if (hasUpgrade(this.layer, this.id)) return player.al.points.pow(1.25).max(1)
-			else return new Decimal(1)
+		cost: new Decimal(1e115),
+		effect() { if (upgradeEffect(this.layer, this.id).gte(1e100)) return ret = new Decimal(1e100)
+			if (hasUpgrade(this.layer, this.id)) ret = player.al.points.pow(1.25).max(1)
+			else retu = new Decimal(1)
 			return ret},
 				effectDisplay() {return "x" + format(upgradeEffect("e", 52))},
 		unlocked() {return (hasUpgrade("e", 51))},
@@ -467,13 +481,14 @@ upgrades: {
 		title: "Essence XIX",
 		description: "Points boosts essences gain",
 		cost: new Decimal(1e130),
-		effect() { if (hasUpgrade(this.layer, this.id)) return player.points.pow(0.05).max(1)
-			else return new Decimal(1)
+		effect() {if (upgradeEffect(this.layer, this.id).gte(1e200)) return ret = new Decimal(1e200)
+			if (hasUpgrade(this.layer, this.id)) ret = player.points.pow(0.05).max(1)
+			else ret = new Decimal(1)
 			return ret},
 				effectDisplay() {return "x" + format(upgradeEffect("e", 53))},
 		unlocked() {return (hasUpgrade("e", 52))},
 		        style() {
-					if (hasUpgrade("e", 52) || player.e.points.gte(this.cost)) return {
+					if (hasUpgrade("e", 53) || player.e.points.gte(this.cost)) return {
 						          'width': "160px",
 		  'border-radius': '5%',
           'min-height': "100px",
@@ -492,6 +507,88 @@ upgrades: {
 				"background-color": 'gray',
 								'color': "white"}
         },
+},
+	61: {
+		title: "Essence XX",
+		description: "Mana boosts 1st equipped Artifact effects at reduced rate",
+		cost: new Decimal(1e160),
+		effect() { if (hasUpgrade(this.layer, this.id)) return player.al.points.pow(0.15)
+			else return new Decimal(1)
+			return ret},
+				effectDisplay() {return "x" + format(upgradeEffect("e", 61),3)},
+		unlocked() {return (hasUpgrade("e", 53))},
+		        style() {
+					if (hasUpgrade("e", 61) || player.e.points.gte(this.cost)) return {
+						          'width': "160px",
+		  'border-radius': '5%',
+          'min-height': "100px",
+		  				"border-color": 'rgb(69, 103, 56)',
+		  		  'margin-left': '20px',
+				  		  		  'margin-top': '17px',
+				"background-color": 'black',
+								'color': "white"
+					}
+					else return {
+          'width': "160px",
+		  'border-radius': '5%',
+          'min-height': "100px",
+		  		  		  'margin-top': '17px',
+		  		  'margin-left': '20px',
+				"background-color": 'gray',
+								'color': "white"}
+        },
+},
+62: {
+	title: "Essence XXI",
+	description: "Change Mana softcap go later: 1e60 => 1e80",
+	cost() {return Decimal.pow(10, 5370)},
+	unlocked() {return (hasUpgrade("e", 61))},
+			style() {
+				if (hasUpgrade("e", 62) || player.e.points.gte(this.cost)) return {
+							  'width': "160px",
+	  'border-radius': '5%',
+	  'min-height': "100px",
+					  "border-color": 'rgb(69, 103, 56)',
+				'margin-left': '20px',
+								  'margin-top': '17px',
+			"background-color": 'black',
+							'color': "white"
+				}
+				else return {
+	  'width': "160px",
+	  'border-radius': '5%',
+	  'min-height': "100px",
+						  'margin-top': '17px',
+				'margin-left': '20px',
+			"background-color": 'gray',
+							'color': "white"}
+	},
+},
+63: {
+	title: "Essence XXI",
+	description: "Change Mana softcap go later: 1e80 => 1e120",
+	cost() {return Decimal.pow(10, 6100)},
+	unlocked() {return (hasUpgrade("e", 62))},
+			style() {
+				if (hasUpgrade("e", 63) || player.e.points.gte(this.cost)) return {
+							  'width': "160px",
+	  'border-radius': '5%',
+	  'min-height': "100px",
+					  "border-color": 'rgb(69, 103, 56)',
+				'margin-left': '20px',
+								  'margin-top': '17px',
+			"background-color": 'black',
+							'color': "white"
+				}
+				else return {
+	  'width': "160px",
+	  'border-radius': '5%',
+	  'min-height': "100px",
+						  'margin-top': '17px',
+				'margin-left': '20px',
+			"background-color": 'gray',
+							'color': "white"}
+	},
 },
 },
 clickables: {

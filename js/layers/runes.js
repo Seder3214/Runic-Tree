@@ -9,7 +9,8 @@ addLayer("r", {
     }},
     color: "#C0C0C0",
     requires() {if (hasUpgrade("e", 25)) return new Decimal(1e50)
-		else return new Decimal(2e12)}, // Can be a function that takes requirement increases into account
+		else return new Decimal(2e12)}, 
+		effectDescription() {return `<br>Runes will be <h3 style="color='red';">hardcapped</h3> at 1e1060`}, // Can be a function that takes requirement increases into account// Can be a function that takes requirement increases into account
     resource: "runes", // Name of prestige currency
     baseResource: "essence", // Name of resource prestige is based on
     baseAmount() {return player.e.points}, // Get the current amount of baseResource
@@ -20,9 +21,12 @@ addLayer("r", {
 	branches: ["e"],// Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
+		if (player.r.points.gte(Decimal.pow(10, 1200))) mult = mult.min(0)
+		if (hasUpgrade("al", 23)) mult = mult.times(upgradeEffect("al", 23))
 		if (hasUpgrade("e", 25)) mult = mult.times(buyableEffect("r", 24)).times(upgradeEffect(this.layer, 13))
 		if (player.r.buyables[24].gte(1)) mult = mult.div(buyableEffect("r", 24))
 		if (hasUpgrade(this.layer, 13)) mult = mult.div(upgradeEffect(this.layer, 13))
+		
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -286,7 +290,12 @@ upgrades: {
 		title: "Runes VII",
 		unlocked() {return hasUpgrade("r", 21)},
 		description: "Buyed upgrades boosts essence gain",
-		effect() {if (player.a.scndAREE > 1) eff = Decimal.pow(2, player.r.upgrades.length).times(upgradeEffect("r", 23)).times(Decimal.pow(2, upgradeEffect("e", 41).add(1))).times(player.a.firstARE).pow(player.a.firstAREE).times(tmp.a.scndARE).pow(tmp.a.scndAREE).times(tmp.a.effect2).times(tmp.a.effect)
+		
+		effect() {				if (player.a.frthAEE > 1) eff = Decimal.pow(2, player.r.upgrades.length).times(upgradeEffect("r", 23)).times(Decimal.pow(2, upgradeEffect("e", 41).add(1))).times(player.a.firstARE).pow(player.a.firstAREE).times(tmp.a.scndARE).pow(tmp.a.scndAREE).times(tmp.a.thrdARE).pow(tmp.a.thrdAREE).times(tmp.a.effect2).times(tmp.a.effect).times(tmp.a.effect3).times(player.a.frthAEE).times(tmp.a.effect4)
+		if (player.a.frthAEEE > 1) eff = Decimal.pow(2, player.r.upgrades.length).times(upgradeEffect("r", 23)).times(Decimal.pow(2, upgradeEffect("e", 41).add(1))).times(player.a.firstARE).pow(player.a.firstAREE).times(tmp.a.scndARE).pow(tmp.a.scndAREE).times(tmp.a.thrdARE).pow(tmp.a.thrdAREE).times(tmp.a.effect2).times(tmp.a.effect).times(tmp.a.effect3).times(player.a.frthAEE).pow(player.a.frthAEEE).times(tmp.a.effect4)
+							if (player.a.thrdAEE > 1) eff = Decimal.pow(2, player.r.upgrades.length).times(upgradeEffect("r", 23)).times(Decimal.pow(2, upgradeEffect("e", 41).add(1))).times(player.a.firstARE).pow(player.a.firstAREE).times(tmp.a.scndARE).pow(tmp.a.scndAREE).times(tmp.a.thrdARE).times(tmp.a.effect2).times(tmp.a.effect).times(tmp.a.effect3)
+			if (player.a.thrdAEEE > 1) eff = Decimal.pow(2, player.r.upgrades.length).times(upgradeEffect("r", 23)).times(Decimal.pow(2, upgradeEffect("e", 41).add(1))).times(player.a.firstARE).pow(player.a.firstAREE).times(tmp.a.scndARE).pow(tmp.a.scndAREE).times(tmp.a.thrdARE).pow(tmp.a.thrdAREE).times(tmp.a.effect2).times(tmp.a.effect).times(tmp.a.effect3)
+			if (player.a.scndAREE > 1) eff = Decimal.pow(2, player.r.upgrades.length).times(upgradeEffect("r", 23)).times(Decimal.pow(2, upgradeEffect("e", 41).add(1))).times(player.a.firstARE).pow(player.a.firstAREE).times(tmp.a.scndARE).pow(tmp.a.scndAREE).times(tmp.a.effect2).times(tmp.a.effect)
 						if (player.a.scndARE > 1) eff = Decimal.pow(2, player.r.upgrades.length).times(upgradeEffect("r", 23)).times(Decimal.pow(2, upgradeEffect("e", 41).add(1))).times(player.a.firstARE.times(tmp.a.effect)).pow(player.a.firstAREE).times(player.a.scndARE).times(tmp.a.effect).times(tmp.a.effect2)
 			if (player.a.firstAREE > 1) eff = Decimal.pow(2, player.r.upgrades.length).times(upgradeEffect("r", 23)).times(Decimal.pow(2, upgradeEffect("e", 41).add(1))).times(player.a.firstARE).pow(player.a.firstAREE).times(tmp.a.effect)
 			if (player.a.firstARE > 1) eff = Decimal.pow(2, player.r.upgrades.length).times(upgradeEffect("r", 23)).times(Decimal.pow(2, upgradeEffect("e", 41).add(1))).times(player.a.firstARE).times(tmp.a.effect)
@@ -304,6 +313,9 @@ upgrades: {
 		effectDisplay() {return "x" + format(upgradeEffect("r",23))},
 		cost: new Decimal(16725),
 	},
+},
+update(diff) {
+	if (player.r.points.gte(Decimal.pow(10, 1200))) player.r.points = player.r.points.div(2).min(Decimal.pow(10, 1060))
 },
     layerShown(){return true}
 })

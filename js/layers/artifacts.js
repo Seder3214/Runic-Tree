@@ -66,7 +66,7 @@ addLayer("a", {
 		fRarity: new Decimal(0),
 		sRarity: new Decimal(0),
 		tRarity: new Decimal(0),
-		fRarity: new Decimal(0),
+		frRarity: new Decimal(0),
 		fvRarity: new Decimal(0),
 		sRarity: new Decimal(0),
 		svRarity: new Decimal(0),
@@ -113,7 +113,9 @@ addLayer("a", {
                 content: [
                     ["blank", "15px"],
 					["row", [["infobox", "fA"], ["buyable", [11]]]],
-					["row", [["infobox", "sA"], ["buyable", [12]]]]
+					["row", [["infobox", "sA"], ["buyable", [12]]]],
+					["row", [["infobox", "tA"], ["buyable", [13]]]],
+					["row", [["infobox", "frA"], ["buyable", [14]]]]
                 ]
             },
 	},
@@ -122,12 +124,26 @@ addLayer("a", {
 		if (!player.a.buyables[11].gte(1)) return new Decimal(1)
 			eff = Decimal.pow(1)
 		if (player.a.buyables[11].gte(1)) eff = eff.times(buyableEffect("a", 11))
+			if (hasUpgrade("e", 61)) eff = eff.times(upgradeEffect("e", 61)) 
 			return eff;
 	},
 		effect2() {
 		if (!player.a.buyables[12].gte(1)) return new Decimal(1)
 			eff = Decimal.pow(1)
 		if (player.a.buyables[12].gte(1)) eff = eff.times(buyableEffect("a", 12))
+		if (hasUpgrade("al", 21)) eff = eff.times(upgradeEffect("al", 21)) 
+			return eff;
+	},
+		effect3() {
+		if (!player.a.buyables[13].gte(1)) return new Decimal(1)
+			eff = Decimal.pow(1)
+		if (player.a.buyables[13].gte(1)) eff = eff.times(buyableEffect("a", 13))
+			return eff;
+	},
+	effect4() {
+		if (!player.a.buyables[14].gte(1)) return new Decimal(1)
+			eff = Decimal.pow(1)
+		if (player.a.buyables[14].gte(1)) eff = eff.times(buyableEffect("a", 14))
 			return eff;
 	},
 		buyables: {
@@ -160,6 +176,7 @@ eff = new Decimal(1.50).pow(x)
       },
 	  							      12: {
 		title() {return "Upgrade 2nd Artifact"},
+		unlocked() {return player.a.sRarity >= 1},
 				purchaseLimit: 15,
         cost(x) {if (player.a.sRarity >= 6) return new Decimal(18250).times(x.times(1.4).max(1))
 			if (player.a.sRarity >= 5) return new Decimal(8600).times(x.times(1.4).max(1))
@@ -175,7 +192,63 @@ eff = new Decimal(1.50).pow(x)
 			  setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
         },
 		effect(x) {
-eff = new Decimal(1.65).pow(x)
+eff = new Decimal(1.43).pow(x)
+		return eff;
+        },
+        style: {
+          width: "100px",
+          height: "130px",
+		  'border-radius': '0%',
+		  'margin-top': '5px'
+        },
+      },
+	  							      13: {
+		title() {return "Upgrade 3rd Artifact"},
+				purchaseLimit: 15,
+				unlocked() {return player.a.tRarity >= 1},
+        cost(x) {if (player.a.tRarity >= 6) return new Decimal(3e12).times(x.times(1.4).max(1))
+			if (player.a.tRarity >= 5) return new Decimal(7.525e11).times(x.times(1.4).max(1))
+			if (player.a.tRarity >= 4) return new Decimal(2e11).times(x.times(1.4).max(1))
+			if (player.a.tRarity >= 3) return new Decimal(6e10).times(x.times(1.4).max(1))
+			if (player.a.tRarity >= 2) return new Decimal(2e10).times(x.times(1.4).max(1))
+			if (player.a.tRarity >= 1) return new Decimal(3e9).times(x.times(1.4).max(1))
+				else return new Decimal(1e309)},
+		canAfford() {return (player.al.points.gte(this.cost()))},
+        display() {return `<h5>Boost 2nd artifact effects<br>Cost: ${format(this.cost())} Mana<br>Effect: x${format(this.effect())}</h5><br>Can be buyed only if you have 2nd Artifact`},
+        buy() {
+          player.al.points = player.al.points.sub(this.cost())
+			  setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+        },
+		effect(x) {
+eff = new Decimal(1.41).pow(x)
+		return eff;
+        },
+        style: {
+          width: "100px",
+          height: "130px",
+		  'border-radius': '0%',
+		  'margin-top': '5px'
+        },
+      },
+	  14: {
+		title() {return "Upgrade 4th Artifact"},
+				purchaseLimit: 15,
+				unlocked() {return player.a.frRarity >= 1},
+        cost(x) {if (player.a.frRarity >= 6) return new Decimal(2e11).times(x.times(1.4).max(1))
+			if (player.a.frRarity >= 5) return new Decimal(3e10).times(x.times(1.4).max(1))
+			if (player.a.frRarity >= 4) return new Decimal(7.5e9).times(x.times(1.4).max(1))
+			if (player.a.frRarity >= 3) return new Decimal(4e9).times(x.times(1.4).max(1))
+			if (player.a.frRarity >= 2) return new Decimal(8.2e8).times(x.times(1.4).max(1))
+			if (player.a.frRarity >= 1) return new Decimal(7e8).times(x.times(1.4).max(1))
+				else return new Decimal(1e309)},
+		canAfford() {return (player.al.points.gte(this.cost()))},
+        display() {return `<h5>Boost 4th artifact effects<br>Cost: ${format(this.cost())} Mana<br>Effect: x${format(this.effect())}</h5><br>Can be buyed only if you have 4th Artifact`},
+        buy() {
+          player.al.points = player.al.points.sub(this.cost())
+			  setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+        },
+		effect(x) {
+eff = new Decimal(1.38).pow(x)
 		return eff;
         },
         style: {
@@ -232,13 +305,13 @@ if (rarityRandom == 4 && rarityEffect == 3){ rEffect = Math.random() * (35 - 20)
 eEffect = Math.random() * (108 - 75) + (75)}
     if (rarityRandom == 4 && rarityEffect == 4){ rEffect = Math.random() * (35 - 20) + (20),
 eEffect = Math.random() * (108 - 75) + (75),
-	pEEffect = Math.random() * (1.45 - 1.23) + (1.23)}
-	if (rarityRandom == 5 && rarityEffect == 1) pEEffect = Math.random() * (1.22 - 1.05) + (1.05);
-	if (rarityRandom == 5 && rarityEffect == 2) eEEffect = Math.random() * (1.15 - 1.02) + (1.02);
+	pEEffect = Math.random() * (1.015 - 1) + (1)}
+	if (rarityRandom == 5 && rarityEffect == 1) pEEffect = Math.random() * (1.03 - 1) + (1);
+	if (rarityRandom == 5 && rarityEffect == 2) eEEffect = Math.random() * (1.04 - 1) + (1);
 	if (rarityRandom == 5 && rarityEffect == 3) rEffect = Math.random() * (240 - 220) + (220);
-		if (rarityRandom == 6) {eEEffect = Math.random() * (2.7 - 2.7) + (2.7)
-				pEEffect = Math.random() * (1.3 - 1) + (1)
-		 rEEffect = Math.random() * (15 - 15) + (15)}
+		if (rarityRandom == 6) {eEEffect = Math.random() * (1.05 - 1) + (1)
+				pEEffect = Math.random() * (1.06 - 1) + (1)
+		 rEEffect = Math.random() * (1.07 - 1) + (1)}
 		 	if (rarityRandom == 5) alEffect = Math.random() * (134 - 76) + (76);
 			if (rarityRandom == 4) alEffect = Math.random() * (42 - 27) + (27);
 			if (rarityRandom == 3) alEffect = Math.random() * (23 - 10) + (10);
@@ -258,8 +331,8 @@ eEffect = Math.random() * (108 - 75) + (75),
 	},
 12: {
 	title: "Apply 1st Artifact",
-	canClick() {return (player.a.RarityText >= 1 && (player.a.fRarity < 1))},
-	unlocked() {return (player.a.RarityText >= 1)},
+	canClick() {return true},
+	unlocked() {return (player.a.points.gte(1))},
 	onClick() {
 		player.a.fRarity = player.a.RarityText
 		  player.a.firstAPE = player.a.paF 
@@ -269,12 +342,20 @@ eEffect = Math.random() * (108 - 75) + (75),
 		  player.a.firstARE = player.a.rviiaF 
 		  player.a.firstAREE = player.a.rviieaF 
 		  player.a.alEffect = player.a.alF 
+		  player.a.RarityText = Math.random() * (0 - 0) + (0);
+		  player.a.paF = Math.random() * (0 - 0) + (0);
+		  player.a.peaF = Math.random() * (0 - 0) + (0);
+		  player.a.eaF = Math.random() * (0 - 0) + (0);
+		  player.a.eeaF = Math.random() * (0 - 0) + (0);
+		  player.a.rviiaF = Math.random() * (0 - 0) + (0);
+		  player.a.rviieaF = Math.random() * (0 - 0) + (0);
+		  player.a.alF = Math.random() * (0 - 0) + (0);
 	},
 },
 13: {
 	title: "Apply 2nd Artifact",
-	canClick() {return (player.a.fRarity >= 1 && (player.a.sRarity < 1))},
-	unlocked() {return (player.a.fRarity >= 1)},
+	canClick() {return (player.a.buyables[11].gte(15))},
+	unlocked() {return (player.a.buyables[11].gte(15) && (player.a.points.gte(2)))},
 	onClick() {
 		player.a.sRarity = player.a.RarityText
 		  player.a.scndAPE = player.a.paF 
@@ -283,12 +364,20 @@ eEffect = Math.random() * (108 - 75) + (75),
 		  player.a.scndAEEE = player.a.eeaF 
 		  player.a.scndARE = player.a.rviiaF
 		  player.a.scndAREE = player.a.rviieaF
+		  player.a.paF = Math.random() * (0 - 0) + (0);
+		  player.a.peaF = Math.random() * (0 - 0) + (0);
+		  player.a.eaF = Math.random() * (0 - 0) + (0);
+		  player.a.eeaF = Math.random() * (0 - 0) + (0);
+		  player.a.rviiaF = Math.random() * (0 - 0) + (0);
+		  player.a.rviieaF = Math.random() * (0 - 0) + (0);
+		  player.a.alF = Math.random() * (0 - 0) + (0);
+		  player.a.RarityText = Math.random() * (0 - 0) + (0);
 	},
 },
 14: {
 	title: "Apply 3rd Artifact",
-		unlocked() {return (player.a.sRarity > 1)},
-	canClick() {return (player.a.sRarity > 1 && (player.a.tRarity < 1))},
+	canClick() {return (player.a.buyables[12].gte(15))},
+	unlocked() {return (player.a.buyables[12].gte(15) && (player.a.points.gte(3)))},
 	onClick() {
 		player.a.tRarity = player.a.RarityText
 		  player.a.thrdAPE = player.a.paF
@@ -297,26 +386,42 @@ eEffect = Math.random() * (108 - 75) + (75),
 		  player.a.thrdAEEE = player.a.eeaF
 		  player.a.thrdARE = player.a.rviiaF
 		  player.a.thrdAREE = player.a.rviieaF
+		  player.a.paF = Math.random() * (0 - 0) + (0);
+		  player.a.peaF = Math.random() * (0 - 0) + (0);
+		  player.a.eaF = Math.random() * (0 - 0) + (0);
+		  player.a.eeaF = Math.random() * (0 - 0) + (0);
+		  player.a.rviiaF = Math.random() * (0 - 0) + (0);
+		  player.a.rviieaF = Math.random() * (0 - 0) + (0);
+		  player.a.alF = Math.random() * (0 - 0) + (0);
+		  player.a.RarityText = Math.random() * (0 - 0) + (0);
 	},
 },
 15: {
 	title: "Apply 4th Artifact",
-		unlocked() {return (player.a.tRarity > 1)},
-	canClick() {return (player.a.tRarity >1)},
+	canClick() {return (player.a.buyables[13].gte(15))},
+	unlocked() {return (player.a.buyables[13].gte(15) && (player.a.points.gte(4)))},
 	onClick() {
-		player.a.frthRarity = player.a.RarityText
+		player.a.frRarity = player.a.RarityText
 		  player.a.frthAPE = player.a.paF
 		  player.a.frthAPEE = player.a.peaF
 		  player.a.frthAEE = player.a.eaF
 		  player.a.frthAEEE = player.a.eeaF
 		  player.a.frthARE = player.a.rviiaF
 		  player.a.frthAREE = player.a.rviieaF
+		  player.a.paF = Math.random() * (0 - 0) + (0);
+		  player.a.peaF = Math.random() * (0 - 0) + (0);
+		  player.a.eaF = Math.random() * (0 - 0) + (0);
+		  player.a.eeaF = Math.random() * (0 - 0) + (0);
+		  player.a.rviiaF = Math.random() * (0 - 0) + (0);
+		  player.a.rviieaF = Math.random() * (0 - 0) + (0);
+		  player.a.alF = Math.random() * (0 - 0) + (0);
+		  player.a.RarityText = Math.random() * (0 - 0) + (0);
 	},
 },
 16: {
 	title: "Apply 5th Artifact",
-		unlocked() {return (player.a.frthRarity > 1)},
-	canClick() {return (player.a.frthRarity >1)},
+		unlocked() {return (player.a.frRarity > 1)},
+	canClick() {return (player.a.frRarity >1)},
 	onClick() {
 		player.a.fvRarity = player.a.RarityText
 		  player.a.ffhAPE = player.a.paF
@@ -370,13 +475,13 @@ style: {
 		},
 	},
 		fA: {
-body(){if (player.a.fRarity >= 6) return "Artifact 1<br>" + "<h3 style='color: #9370DB;'>Arcanic Boosting Artifact</h3><sup>+" + formatWhole(player.a.buyables[11]) + "</sup>" + "<br> Characteristics: <br> ^" + format(player.a.firstAPEE) + "(" + format(tmp.a.effect) + ") to points <br> ^" + format(player.a.firstAEEE) + "(" + format(tmp.a.effect) + ") to essences <br> ^" + format(player.a.firstAREE) + "(" + format(tmp.a.effect) + ") to Runes VII<br> +" + format(player.a.alEffect) + "(" + format(tmp.a.effect.div(5).max(1)) + ") Mana on its Reset"
-		if (player.a.fRarity >= 5) return "Artifact 1<br>" + "<h3 style='color: #87CEFA;'>Stellar Boosting Artifact</h3><sup>+" + formatWhole(player.a.buyables[11]) + "</sup>" + " Characteristics:<br> ^" + format(player.a.firstAPEE) + "(" + format(tmp.a.effect) + ") to points<br> ^" + format(player.a.firstAEEE) + "(" + format(tmp.a.effect) + ") to essences<br> x" + format(player.a.firstAREE) + "(" + format(tmp.a.effect) + ") to Runes VII<br> +" + format(player.a.alEffect) + "(" + format(tmp.a.effect.div(5).max(1)) + ") Mana on its Reset"
-		if (player.a.fRarity >= 4) return "Artifact 1<br>" + "<h3 style='color: #8A2BE2;'>Omniscient Boosting Artifact</h3><sup>+" + formatWhole(player.a.buyables[11]) + "</sup>" + " Characteristics:<br> x" + format(player.a.firstAPE) + "(" + format(tmp.a.effect) + ") to points<br> x" + format(player.a.firstAEE) + "(" + format(tmp.a.effect) + ") to essences<br> x" + format(player.a.firstARE) + "(" + format(tmp.a.effect) + ") to Runes VII<br> ^" + format(player.a.firstAPEE) + "(" + format(tmp.a.effect.div(5).max(1)) + ") to points<br> +" + format(player.a.alEffect) + "(" + format(tmp.a.effect) + ") Mana on its Reset"
-		if (player.a.fRarity >=3) return "Artifact 1<br>" + "<h3 style='color: #7FFF00;'>Strong Boosting Artifact</h3><sup>+" + formatWhole(player.a.buyables[11]) + "</sup>" + " Characteristics:<br> x" + format(player.a.firstAPE) + "(" + format(tmp.a.effect) + ") to points<br> x" + format(player.a.firstAEE) + "(" + format(tmp.a.effect) + ") to essences<br> x" + format(player.a.firstARE) + "(" + format(tmp.a.effect) + ") to Runes VII<br> +" + format(player.a.alEffect) + "(" + format(tmp.a.effect.div(5).max(1)) + ") Mana on its Reset"
-		if (player.a.fRarity >=2) return "Artifact 1<br>" + "<h3 style='color: #1E90FF;'>Hardened Boosting Artifact</h3><sup>+" + formatWhole(player.a.buyables[11]) + "</sup>" + " Characteristics:<br> x" + format(player.a.firstAPE) + "(" + format(tmp.a.effect) + ") to points<br> x" + format(player.a.firstAEE) + "(" + format(tmp.a.effect) + ") to essences<br> +" + format(player.a.alEffect) + "(" + format(tmp.a.effect.div(5)) + ") Mana on its Reset"
-		if (player.a.fRarity >=1) return "Artifact 1<br>" + "<h3 style='color: #383838;'>Weak Boosting Artifact</h3><sup>+" + formatWhole(player.a.buyables[11]) + "</sup>" + " Characteristics:<br> x" + format(player.a.firstAPE) + "(" + format(tmp.a.effect) + ") to points<br> +" + format(player.a.alEffect) + "(" + format(tmp.a.effect.div(5)) + ") Mana on its Reset"	
-else return "Artifact Information<br>You have not created any Artifact right now!"},
+body(){if (player.a.fRarity >= 6) return "Artifact 1<br>" + "<h3 style='color: #9370DB;'>Arcanic Boosting Artifact</h3><sup>+" + formatWhole(player.a.buyables[11]) + "</sup>" + "<br> Characteristics: <br> ^" + format(player.a.firstAPEE) + "(" + format(tmp.a.effect) + ") to points <br> ^" + format(player.a.firstAEEE) + "(" + format(tmp.a.effect) + ") to essences <br> ^" + format(player.a.firstAREE) + "(" + format(tmp.a.effect) + ") to Runes VII<br> +" + format(player.a.alEffect) + "(" + format(tmp.a.effect.div(7).max(1)) + ") Mana on its Reset"
+		if (player.a.fRarity >= 5) return "Artifact 1<br>" + "<h3 style='color: #87CEFA;'>Stellar Boosting Artifact</h3><sup>+" + formatWhole(player.a.buyables[11]) + "</sup>" + " Characteristics:<br> ^" + format(player.a.firstAPEE) + "(" + format(tmp.a.effect) + ") to points<br> ^" + format(player.a.firstAEEE) + "(" + format(tmp.a.effect) + ") to essences<br> x" + format(player.a.firstAREE) + "(" + format(tmp.a.effect) + ") to Runes VII<br> +" + format(player.a.alEffect) + "(" + format(tmp.a.effect.div(7).max(1)) + ") Mana on its Reset"
+		if (player.a.fRarity >= 4) return "Artifact 1<br>" + "<h3 style='color: #8A2BE2;'>Omniscient Boosting Artifact</h3><sup>+" + formatWhole(player.a.buyables[11]) + "</sup>" + " Characteristics:<br> x" + format(player.a.firstAPE) + "(" + format(tmp.a.effect) + ") to points<br> x" + format(player.a.firstAEE) + "(" + format(tmp.a.effect) + ") to essences<br> x" + format(player.a.firstARE) + "(" + format(tmp.a.effect) + ") to Runes VII<br> ^" + format(player.a.firstAPEE) + "(" + format(tmp.a.effect) + ") to points<br> +" + format(player.a.alEffect) + "(" + format(tmp.a.effect.div(7).max(1)) + ") Mana on its Reset"
+		if (player.a.fRarity >=3) return "Artifact 1<br>" + "<h3 style='color: #7FFF00;'>Strong Boosting Artifact</h3><sup>+" + formatWhole(player.a.buyables[11]) + "</sup>" + " Characteristics:<br> x" + format(player.a.firstAPE) + "(" + format(tmp.a.effect) + ") to points<br> x" + format(player.a.firstAEE) + "(" + format(tmp.a.effect) + ") to essences<br> x" + format(player.a.firstARE) + "(" + format(tmp.a.effect) + ") to Runes VII<br> +" + format(player.a.alEffect) + "(" + format(tmp.a.effect.div(7).max(1)) + ") Mana on its Reset"
+		if (player.a.fRarity >=2) return "Artifact 1<br>" + "<h3 style='color: #1E90FF;'>Hardened Boosting Artifact</h3><sup>+" + formatWhole(player.a.buyables[11]) + "</sup>" + " Characteristics:<br> x" + format(player.a.firstAPE) + "(" + format(tmp.a.effect) + ") to points<br> x" + format(player.a.firstAEE) + "(" + format(tmp.a.effect) + ") to essences<br> +" + format(player.a.alEffect) + "(" + format(tmp.a.effect.div(7).max(1)) + ") Mana on its Reset"
+		if (player.a.fRarity >=1) return "Artifact 1<br>" + "<h3 style='color: #383838;'>Weak Boosting Artifact</h3><sup>+" + formatWhole(player.a.buyables[11]) + "</sup>" + " Characteristics:<br> x" + format(player.a.firstAPE) + "(" + format(tmp.a.effect) + ") to points<br> +" + format(player.a.alEffect) + "(" + format(tmp.a.effect.div(7)) + ") Mana on its Reset"	
+else return "Artifact Information<br>TYou haven't equipped any artifact in 1st slot right now"},
 style: {
 			'border-radius': '0%',
 		},
@@ -388,11 +493,35 @@ body(){if (player.a.sRarity >= 6) return "Artifact 2<br>" + "<h3 style='color: #
 		if (player.a.sRarity >=3) return "Artifact 2<br>" + "<h3 style='color: #7FFF00;'>Strong Boosting Artifact</h3><sup>+" + formatWhole(player.a.buyables[12]) + "</sup>" + " Characteristics:<br> x" + format(player.a.scndAPE) + "(" + format(tmp.a.effect2) + ") to points<br> x" + format(player.a.scndAEE)+ "(" + format(tmp.a.effect2) + ") to essences<br> x" + format(player.a.scndARE) + "(" + format(tmp.a.effect2) + ") to Runes VII"
 		if (player.a.sRarity >=2) return "Artifact 2<br>" + "<h3 style='color: #1E90FF;'>Hardened Boosting Artifact</h3><sup>+" + formatWhole(player.a.buyables[12]) + "</sup>" + " Characteristics:<br> x" + format(player.a.scndAPE) + "(" + format(tmp.a.effect2) + ") to points<br> x" + format(player.a.scndAEE) + "(" + format(tmp.a.effect2) + ") to essences"
 		if (player.a.sRarity >=1) return "Artifact 2<br>" + "<h3 style='color: #383838;'>Weak Boosting Artifact</h3><sup>+" + formatWhole(player.a.buyables[12]) + "</sup>" + " Characteristics:<br> x" + format(player.a.scndAPE) + "(" + format(tmp.a.effect2) + ") to points"	
-else return "Artifact Information<br>You have not created any Artifact right now!"},
+		else return "Artifact Information<br>To unlock this slot you need to upgrade your 1st artifact to <sup>+15</sup>"},
 style: {
 			'border-radius': '0%',
 		},
 	},
+			tA: {
+body(){if (player.a.tRarity >= 6) return "Artifact 3<br>" + "<h3 style='color: #9370DB;'>Arcanic Boosting Artifact</h3><sup>+" + formatWhole(player.a.buyables[13]) + "</sup>" + "<br> Characteristics: <br> ^" + format(player.a.thrdAPEE) + "(" + format(tmp.a.effect3) + ") to points <br> ^" + format(player.a.thrdAEEE) + "(" + format(tmp.a.effect3) + ") to essences <br> ^" + format(player.a.thrdAREE) + "(" + format(tmp.a.effect3) + ") to Runes VII"
+		if (player.a.tRarity >= 5) return "Artifact 3<br>" + "<h3 style='color: #87CEFA;'>Stellar Boosting Artifact</h3><sup>+" + formatWhole(player.a.buyables[13]) + "</sup>" + " Characteristics:<br> ^" + format(player.a.thrdAPEE) + "(" + format(tmp.a.effect3) + ") to points<br> ^" + format(player.a.thrdAEEE) + "(" + format(tmp.a.effect3) + ") to essences<br> x" + format(player.a.thrdAREE) + "(" + format(tmp.a.effect3) + ") to Runes VII"
+		if (player.a.tRarity >= 4) return "Artifact 3<br>" + "<h3 style='color: #8A2BE2;'>Omniscient Boosting Artifact</h3><sup>+" + formatWhole(player.a.buyables[13]) + "</sup>" + " Characteristics:<br> x" + format(player.a.thrdAPE) + "(" + format(tmp.a.effect3) + ") to points<br> x" + format(player.a.thrdAEE) + "(" + format(tmp.a.effect3) + ") to essences<br> x" + format(player.a.thrdARE) + "(" + format(tmp.a.effect3) + ") to Runes VII<br> ^" + format(player.a.thrdAPEE) + "(" + format(tmp.a.effect3) + ") to points"
+		if (player.a.tRarity >=3) return "Artifact 3<br>" + "<h3 style='color: #7FFF00;'>Strong Boosting Artifact</h3><sup>+" + formatWhole(player.a.buyables[13]) + "</sup>" + " Characteristics:<br> x" + format(player.a.thrdAPE) + "(" + format(tmp.a.effect3) + ") to points<br> x" + format(player.a.thrdAEE)+ "(" + format(tmp.a.effect3) + ") to essences<br> x" + format(player.a.thrdARE) + "(" + format(tmp.a.effect3) + ") to Runes VII"
+		if (player.a.tRarity >=2) return "Artifact 3<br>" + "<h3 style='color: #1E90FF;'>Hardened Boosting Artifact</h3><sup>+" + formatWhole(player.a.buyables[13]) + "</sup>" + " Characteristics:<br> x" + format(player.a.thrdAPE) + "(" + format(tmp.a.effect3) + ") to points<br> x" + format(player.a.thrdAEE) + "(" + format(tmp.a.effect3) + ") to essences"
+		if (player.a.tRarity >=1) return "Artifact 3<br>" + "<h3 style='color: #383838;'>Weak Boosting Artifact</h3><sup>+" + formatWhole(player.a.buyables[13]) + "</sup>" + " Characteristics:<br> x" + format(player.a.thrdAPE) + "(" + format(tmp.a.effect3) + ") to points"	
+		else return "Artifact Information<br>To unlock this slot you need to upgrade your 2nd artifact to <sup>+15</sup>"},
+style: {
+			'border-radius': '0%',
+		},
+	},
+	frA: {
+		body(){if (player.a.frRarity >= 6) return "Artifact 4<br>" + "<h3 style='color: #9370DB;'>Arcanic Boosting Artifact</h3><sup>+" + formatWhole(player.a.buyables[14]) + "</sup>" + "<br> Characteristics: <br> ^" + format(player.a.frthAPEE) + "(" + format(tmp.a.effect4) + ") to points <br> ^" + format(player.a.frthAEEE) + "(" + format(tmp.a.effect4) + ") to essences <br> ^" + format(player.a.frthAREE) + "(" + format(tmp.a.effect4) + ") to Runes VII"
+				if (player.a.frRarity >= 5) return "Artifact 4<br>" + "<h3 style='color: #87CEFA;'>Stellar Boosting Artifact</h3><sup>+" + formatWhole(player.a.buyables[14]) + "</sup>" + " Characteristics:<br> ^" + format(player.a.frthAPEE) + "(" + format(tmp.a.effect4) + ") to points<br> ^" + format(player.a.frthAEEE) + "(" + format(tmp.a.effect4) + ") to essences<br> x" + format(player.a.frthAREE) + "(" + format(tmp.a.effect4) + ") to Runes VII"
+				if (player.a.frRarity >= 4) return "Artifact 4<br>" + "<h3 style='color: #8A2BE2;'>Omniscient Boosting Artifact</h3><sup>+" + formatWhole(player.a.buyables[14]) + "</sup>" + " Characteristics:<br> x" + format(player.a.frthAPE) + "(" + format(tmp.a.effect4) + ") to points<br> x" + format(player.a.frthAEE) + "(" + format(tmp.a.effect4) + ") to essences<br> x" + format(player.a.frthARE) + "(" + format(tmp.a.effect4) + ") to Runes VII<br> ^" + format(player.a.frthAPEE) + "(" + format(tmp.a.effect4) + ") to points"
+				if (player.a.frRarity >=3) return "Artifact 4<br>" + "<h3 style='color: #7FFF00;'>Strong Boosting Artifact</h3><sup>+" + formatWhole(player.a.buyables[14]) + "</sup>" + " Characteristics:<br> x" + format(player.a.frthAPE) + "(" + format(tmp.a.effect4) + ") to points<br> x" + format(player.a.frthAEE)+ "(" + format(tmp.a.effect4) + ") to essences<br> x" + format(player.a.frthARE) + "(" + format(tmp.a.effect4) + ") to Runes VII"
+				if (player.a.frRarity >=2) return "Artifact 4<br>" + "<h3 style='color: #1E90FF;'>Hardened Boosting Artifact</h3><sup>+" + formatWhole(player.a.buyables[14]) + "</sup>" + " Characteristics:<br> x" + format(player.a.frthAPE) + "(" + format(tmp.a.effect4) + ") to points<br> x" + format(player.a.frthAEE) + "(" + format(tmp.a.effect4) + ") to essences"
+				if (player.a.frRarity >=1) return "Artifact 4<br>" + "<h3 style='color: #383838;'>Weak Boosting Artifact</h3><sup>+" + formatWhole(player.a.buyables[14]) + "</sup>" + " Characteristics:<br> x" + format(player.a.frthAPE) + "(" + format(tmp.a.effect4) + ") to points"	
+				else return "Artifact Information<br>To unlock this slot you need to upgrade your 3rd artifact to <sup>+15</sup>"},
+		style: {
+					'border-radius': '0%',
+				},
+			},
 },
     layerShown(){return (player.r.points.gte(1e11) || player[this.layer].unlocked)}
 })

@@ -3,7 +3,7 @@ let modInfo = {
 	id: "runic",
 	author: "Seder3214",
 	pointsName: "points",
-	modFiles: ["layers/essence.js", "layers/runes.js", "layers/artifacts.js", "tree.js", "layers/altar.js"],
+	modFiles: ["layers/essence.js", "layers/runes.js", "layers/artifacts.js", "tree.js", "layers/altar.js", "layers/evolve.js"],
 
 	discordName: "",
 	discordLink: "",
@@ -13,11 +13,14 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.4.2.2",
+	num: "0.5",
 	name: "Literally nothing",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+<br><h3 style='color: #00CED1;'>v0.5- Mana</h3><br>
+<span style='color: #808080'> - More mana content<br>
+- Changed some descritions of upgrades/clickables</span>
 	<br><h3 style='color: #00CED1;'>v0.4.2.2 - Artifacts</h3><br>
 			<span style='color: #808080'> - Increased Weak Artifact mana gain<br>
 			- Changed some descritions of upgrades/clickables</span>
@@ -85,12 +88,17 @@ function getPointGen() {
 	if (player.r.buyables[13].gte(1)) gain = gain.times(buyableEffect("r", 13))
 		if (hasUpgrade("r", 11)) gain = gain.times(upgradeEffect("r", 11))
 		if (hasUpgrade("e", 32)) gain = gain.times(upgradeEffect("e", 32))
+		if (player.a.frthAPEE > 1) gain = gain.pow(player.a.frthAPEE)
+		if (player.a.frthAPE > 1) gain = gain.times(player.a.frthAPE)
+		if (player.a.thrdAPEE > 1) gain = gain.pow(player.a.thrdAPEE)
+		if (player.a.thrdAPE > 1) gain = gain.times(player.a.thrdAPE)
 					if (player.a.scndAPEE > 1) gain = gain.pow(player.a.scndAPEE)
 					if (player.a.scndAPE > 1) gain = gain.times(player.a.scndAPE)
 						if (player.a.firstAPEE > 1) gain = gain.pow(player.a.firstAPEE)
 							if (player.a.firstAPE > 1) gain = gain.times(player.a.firstAPE)
 								if (tmp.a.effect.gte(1)) gain = gain.times(tmp.a.effect)
 								if (tmp.a.effect.gte(2)) gain = gain.times(tmp.a.effect2)
+								if (hasUpgrade("al", 33)) gain = gain.pow(upgradeEffect("al", 33))
 		
 	return gain
 }
@@ -100,13 +108,13 @@ function addedPlayerData() { return {
 
 // Display extra things at the top of the page
 var displayThings = [
-function(){return "Current endgame: 1e145 Essences"},
+function(){return "Current endgame: 1e6100 Essences"},
 ]
 
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.e.points.gte(1e145)
+	return player.e.points.gte(Decimal.pow(10, 6100))
 }
 
 
