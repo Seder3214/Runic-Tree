@@ -326,7 +326,7 @@ addLayer("al", {
 41: {
 	title: "Mana X",
 	description: "Artifact slots gives exponental boost to essences gain at reduced rate",
-	cost: new Decimal(4.214e238),
+	cost: new Decimal(4.214e232),
 	effect() { if (hasUpgrade("al", 42)) return player.a.points.pow(0.2).times(upgradeEffect("al", 42))
 		else return player.a.points.pow(0.2)},
 			effectDisplay() {return "^" + format(upgradeEffect("al", 41),4)},
@@ -357,7 +357,7 @@ addLayer("al", {
 42: {
 	title: "Mana XI",
 	description: "[Mana IX] gives a boost to [Mana X] effect",
-	cost: new Decimal(4.214e238),
+	cost: new Decimal(4.214e300),
 	effect() { return upgradeEffect("al", 33).pow(20)},
 			effectDisplay() {return "x" + format(upgradeEffect("al", 42),4)},
 	unlocked() {return (hasUpgrade("al", 41))},
