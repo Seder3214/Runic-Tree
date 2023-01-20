@@ -341,14 +341,6 @@ onClick() {
 			player.a.rviiaF = Math.random() * (240 - 1) + (1)
 			player.a.alF = Math.random() * (42 - 27) + (27);
 		}
-		else {
-				player.a.paF = Math.random() * (0 - 0) + (0);
-				player.a.peaF = Math.random() * (0 - 0) + (0);
-				player.a.eaF = Math.random() * (0 - 0) + (0);
-				player.a.eeaF = Math.random() * (0 - 0) + (0);
-				player.a.rviiaF = Math.random() * (0 - 0) + (0);
-				player.a.rviieaF = Math.random() * (0 - 0) + (0);
-				player.a.alF = Math.random() * (0 - 0) + (0);}
 				player.a.RarityText = Math.random() * (0 - 0) + (0);
 		  player.a.firstAPE = player.a.paF 
 		  player.a.firstAPEE = player.a.peaF
@@ -358,6 +350,13 @@ onClick() {
 		  player.a.firstAREE = player.a.rviieaF 
 		  player.a.alEffect = player.a.alF 
 		  player.a.RarityText = Math.random() * (0 - 0) + (0);
+		  player.a.paF = Math.random() * (0 - 0) + (0);
+		  player.a.peaF = Math.random() * (0 - 0) + (0);
+		  player.a.eaF = Math.random() * (0 - 0) + (0);
+		  player.a.eeaF = Math.random() * (0 - 0) + (0);
+		  player.a.rviiaF = Math.random() * (0 - 0) + (0);
+		  player.a.rviieaF = Math.random() * (0 - 0) + (0);
+		  player.a.alF = Math.random() * (0 - 0) + (0);
 	},
 },
 13: {
@@ -375,15 +374,6 @@ onClick() {
 			player.a.rviiaF = Math.random() * (240 - 1) + (1)
 			player.a.alF = Math.random() * (42 - 27) + (27);
 		}
-		else {
-				player.a.paF = Math.random() * (0 - 0) + (0);
-				player.a.peaF = Math.random() * (0 - 0) + (0);
-				player.a.eaF = Math.random() * (0 - 0) + (0);
-				player.a.eeaF = Math.random() * (0 - 0) + (0);
-				player.a.rviiaF = Math.random() * (0 - 0) + (0);
-				player.a.rviieaF = Math.random() * (0 - 0) + (0);
-				player.a.alF = Math.random() * (0 - 0) + (0);}
-				player.a.RarityText = Math.random() * (0 - 0) + (0);
 		  player.a.RarityText = Math.random() * (0 - 0) + (0);
 		  player.a.scndAPE = player.a.paF 
 		  player.a.scndAPEE = player.a.peaF 
@@ -391,6 +381,13 @@ onClick() {
 		  player.a.scndAEEE = player.a.eeaF 
 		  player.a.scndARE = player.a.rviiaF
 		  player.a.scndAREE = player.a.rviieaF
+		  player.a.paF = Math.random() * (0 - 0) + (0);
+		  player.a.peaF = Math.random() * (0 - 0) + (0);
+		  player.a.eaF = Math.random() * (0 - 0) + (0);
+		  player.a.eeaF = Math.random() * (0 - 0) + (0);
+		  player.a.rviiaF = Math.random() * (0 - 0) + (0);
+		  player.a.rviieaF = Math.random() * (0 - 0) + (0);
+		  player.a.alF = Math.random() * (0 - 0) + (0);
 	},
 },
 14: {
