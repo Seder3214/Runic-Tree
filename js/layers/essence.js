@@ -678,7 +678,7 @@ upgrades: {
 81: {
 	title: "Essence XXVI",
 	description: "Gain 100% of essences gain per second",
-	cost() {return Decimal.pow(10, 10440)},
+	cost() {return Decimal.pow(10, 10170)},
 	unlocked() {return (hasUpgrade("e", 73))},
 			style() {
 				if (hasUpgrade("e", 81) || player.e.points.gte(this.cost)) return {

@@ -13,12 +13,12 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.6.4.2",
+	num: "0.6.4.3",
 	name: "Literally nothing",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-<br><h3 style='color: #95500c;'>v0.6.4.2 - Evolve</h3><br>
+<br><h3 style='color: #95500c;'>v0.6.4.3 - Evolve</h3><br>
 <span style='color: #808080'> - New layer!<br>
 - Reworked artifact system</span>
 <br><h3 style='color: #6495ed;'>v0.5 - Mana</h3><br>
