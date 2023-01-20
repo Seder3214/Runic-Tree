@@ -281,7 +281,7 @@ onClick() {
 			if (rarityRandom >= 1) rarityRandom = Math.random() * (2.2 - 1.8) + (1.8);
 		if (rarityRandom >= 2 && (!hasChallenge("v", 13))) {rarityRandom = Math.random() * (3.2 - 2.7) + (2.7)
 			rarityEffect = Math.random() * (2.1 - 1) + (1)}
-		if (rarityRandom >= 3 && (hasChallenge("v", 13))) {rarityRandom = Math.random() * (4.2 - 3.6) + (3.6)
+		if (rarityRandom >= 5 || (hasChallenge("v", 13))) {rarityRandom = Math.random() * (4.2 - 3.6) + (3.6)
 			rarityEffect = Math.random() * (3.1 - 1) + (1)}
 		rarityRandom = Math.floor(rarityRandom)
 		rarityEffect = Math.floor(rarityEffect)

@@ -76,13 +76,13 @@ else return {
     12: {
         name: "Evolve Challenge 2",
         challengeDescription: "Mana hardcap decreases to 1e30, and you are unable to buy [Essence XXI-XXIII] upgrades",
-        goalDescription: "1e3722 Points",
+        goalDescription: "1e3882 Points",
         unlocked() {return player.v.points.gte(2)},
         onEnter() {
 layerDataReset("e")
 layerDataReset("a")
         },
-        canComplete: function() {return player.points.gte(Decimal.pow(10, 3722))},
+        canComplete: function() {return player.points.gte(Decimal.pow(10, 3882))},
         rewardDescription() {return "Everytime on equipping 2nd artifact it will be [Omniscient]"},
 style() {
 if (hasChallenge("v", 12) || (player.points.gte(Decimal.pow(10, 3722)))) return {
@@ -107,13 +107,13 @@ else return {
 13: {
     name: "Evolve Challenge 3",
     challengeDescription: "You cannot equip 3rd and 4th artifacts, essence gain in ^0.2, Mana hardcap => 1e9",
-    goalDescription: "1e480 Points",
+    goalDescription: "1e475 Points",
     unlocked() {return player.v.points.gte(3)},
     onEnter() {
 layerDataReset("e")
 layerDataReset("a")
     },
-    canComplete: function() {return player.points.gte(Decimal.pow(10, 480))},
+    canComplete: function() {return player.points.gte(Decimal.pow(10, 475))},
     rewardDescription() {return "Get an ability to get [Omn-t] while creating artifact. Lose ability to get [Hardened]"},
 style() {
 if (hasChallenge("v", 13) || (player.points.gte(Decimal.pow(10, 480)))) return {
