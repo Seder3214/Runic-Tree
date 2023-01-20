@@ -651,7 +651,7 @@ upgrades: {
 },
 73: {
 	title: "Essence XXV",
-	description: "Increase Runes hardcap to 1e2000",
+	description: "Increase Runes hardcap to 1e1930",
 	cost() {return Decimal.pow(10, 6650)},
 	unlocked() {return (hasUpgrade("e", 72))},
 			style() {
