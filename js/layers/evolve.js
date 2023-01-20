@@ -138,13 +138,13 @@ else return {
 21: {
     name: "Evolve Challenge 4",
     challengeDescription: "Essence base reduced to 10",
-    goalDescription: "1e630 Points",
+    goalDescription: "1e568 Points",
     unlocked() {return player.v.points.gte(4)},
     onEnter() {
 layerDataReset("e")
 layerDataReset("a")
     },
-    canComplete: function() {return player.points.gte(Decimal.pow(10, 630))},
+    canComplete: function() {return player.points.gte(Decimal.pow(10, 568))},
     rewardDescription() {return "Everytime 1st artifact will be [Stellar]"},
 style() {
 if (hasChallenge("v", 13) || (player.points.gte(Decimal.pow(10, 480)))) return {

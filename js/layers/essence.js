@@ -596,7 +596,7 @@ upgrades: {
 },
 71: {
 	title: "Essence XXIII",
-	description: "Remove the Mana Hardcap, but change it with softcap (starts at 1e140)",
+	description: "Increase Mana softcap (starts at 1e140)",
 	cost() {return Decimal.pow(10, 6340)},
 	unlocked() {return (hasUpgrade("e", 63) && (!inChallenge("v", 12)))},
 			style() {
