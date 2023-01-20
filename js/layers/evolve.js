@@ -48,7 +48,7 @@ addLayer("v", {
             name: "Evolve Challenge 1",
             challengeDescription: "You cant use artifacts, and essence gain is ^0.35<br>(All challenges Resets A and E)",
             goalDescription: "1e2792 Points",
-            unlocked() {return player.v.points.gte(2)},
+            unlocked() {return player.v.points.gte(1)},
             onEnter() {
 layerDataReset("e")
 layerDataReset("a")
@@ -139,7 +139,7 @@ else return {
     name: "Evolve Challenge 4",
     challengeDescription: "Essence base reduced to 10",
     goalDescription: "1e630 Points",
-    unlocked() {return player.v.points.gte(3)},
+    unlocked() {return player.v.points.gte(4)},
     onEnter() {
 layerDataReset("e")
 layerDataReset("a")

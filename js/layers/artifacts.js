@@ -281,7 +281,7 @@ onClick() {
 			if (rarityRandom >= 1) rarityRandom = Math.random() * (2.2 - 1.8) + (1.8);
 		if (rarityRandom >= 2 && (!hasChallenge("v", 13))) {rarityRandom = Math.random() * (3.2 - 2.7) + (2.7)
 			rarityEffect = Math.random() * (2.1 - 1) + (1)}
-		if (rarityRandom >= 3 || (hasChallenge("v", 13))) {rarityRandom = Math.random() * (4.2 - 3.6) + (3.6)
+		if (rarityRandom >= 3 && (hasChallenge("v", 13))) {rarityRandom = Math.random() * (4.2 - 3.6) + (3.6)
 			rarityEffect = Math.random() * (3.1 - 1) + (1)}
 		rarityRandom = Math.floor(rarityRandom)
 		rarityEffect = Math.floor(rarityEffect)
@@ -432,48 +432,6 @@ onClick() {
 		  player.a.rviieaF = Math.random() * (0 - 0) + (0);
 		  player.a.alF = Math.random() * (0 - 0) + (0);
 		  player.a.RarityText = Math.random() * (0 - 0) + (0);
-	},
-},
-16: {
-	title: "Apply 5th Artifact",
-		unlocked() {return (player.a.frRarity > 1)},
-	canClick() {return (player.a.frRarity >1)},
-	onClick() {
-		player.a.fvRarity = player.a.RarityText
-		  player.a.ffhAPE = player.a.paF
-		  player.a.ffhAPEE = player.a.peaF
-		  player.a.ffhAEE = player.a.eaF
-		  player.a.ffhAEEE = player.a.eeaF
-		  player.a.ffhARE = player.a.rviiaF
-		  player.a.ffhAREE = player.a.rviieaF
-	},
-},
-17: {
-	title: "Apply 6th Artifact",
-	canClick() {return (player.a.fvRarity > 1)},
-		unlocked() {return (player.a.fvRarity > 1)},
-	onClick() {
-		player.a.sRarity = player.a.RarityText
-		  player.a.sxthAPE = player.a.paF
-		  player.a.sxthAPEE = player.a.peaF
-		  player.a.sxthAEE = player.a.eaF
-		  player.a.sxthAEEE = player.a.eeaF
-		  player.a.sxthARE = player.a.rviiaF
-		  player.a.sxthAREE = player.a.rviieaF
-	},
-},
-18: {
-	title: "Apply 7th Artifact",
-		unlocked() {return (player.a.svRarity > 1)},
-	canClick() {return (player.a.svRarity >1)},
-	onClick() {
-		player.a.svRarity = player.a.RarityText
-		  player.a.svthAPE = player.a.paF
-		  player.a.svthAPEE = player.a.peaF
-		  player.a.svthAEE = player.a.eaF
-		  player.a.svthAEEE = player.a.eeaF
-		  player.a.svthARE = player.a.rviiaF
-		  player.a.svthAREE = player.a.rviieaF
 	},
 },
 21: {
