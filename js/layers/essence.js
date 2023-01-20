@@ -44,18 +44,22 @@ addLayer("e", {
 			if (player.e.uc.gte(1)) mult = mult.times(player.e.uc.times(1.05).max(1))
 			if (player.e.e.gte(1)) mult = mult.times(player.e.e.times(1.75).max(1))
 				if (player.r.buyables[23].gte(1)) mult = mult.times(buyableEffect("r", 23))
-								if (player.a.firstAEE > 1) mult = mult.times(player.a.firstAEE).times(tmp.a.effect)
-					if (player.a.firstAEEE > 1) mult = mult.pow(player.a.firstAEEE).times(tmp.a.effect)
-												if (player.a.scndAEE > 1) mult = mult.times(player.a.scndAEE).times(tmp.a.effect2)
-					if (player.a.scndAEEE > 1) mult = mult.pow(player.a.scndAEEE).times(tmp.a.effect2)
-					if (player.a.thrdAEE > 1) mult = mult.times(player.a.thrdAEE).times(tmp.a.effect3)
-					if (player.a.thrdAEEE > 1) mult = mult.pow(player.a.thrdAEEE).times(tmp.a.effect3)
-					if (player.a.frthAEE > 1) mult = mult.times(player.a.frthAEE).times(tmp.a.effect4)
-					if (player.a.frthAEEE > 1) mult = mult.pow(player.a.frthAEEE).times(tmp.a.effect4)
+				if (player.a.frthAEE > 1) mult = mult.times(player.a.frthAEE).times(tmp.a.effect4)
+				if (player.a.frthAEEE > 1) mult = mult.pow(player.a.frthAEEE).times(tmp.a.effect4)
+				if (player.a.thrdAEE > 1) mult = mult.times(player.a.thrdAEE).times(tmp.a.effect3)
+				if (player.a.thrdAEEE > 1) mult = mult.pow(player.a.thrdAEEE).times(tmp.a.effect3)
+				if (player.a.scndAEE > 1) mult = mult.times(player.a.scndAEE).times(tmp.a.effect2)
+				if (player.a.scndAEEE > 1) mult = mult.pow(player.a.scndAEEE).times(tmp.a.effect2)
+				if (player.a.firstAEE > 1) mult = mult.times(player.a.firstAEE).times(tmp.a.effect)
+				if (player.a.firstAEEE > 1) mult = mult.pow(player.a.firstAEEE).times(tmp.a.effect)
 					if (hasUpgrade("al", 32)) mult = mult.times(upgradeEffect("al", 32))
 					if (player.al.buyables[11].gte(1)) mult = mult.times(buyableEffect("al", 11))
 					if (player.e.points.gte(Decimal.pow(10, 2880))) mult = softcap(mult, Decimal.pow(10, 2880), new Decimal(0.00001))
-        return mult
+ if (inChallenge("v", 11)) mult = mult.pow(0.35)
+ if (inChallenge("v", 13)) mult = mult.pow(0.2)
+ if (hasUpgrade("al", 41)) mult = mult.pow(upgradeEffect("al", 41))
+ if (inChallenge("v", 21)) mult = mult.min(10)
+					return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
         return new Decimal(1)
@@ -85,7 +89,7 @@ addLayer("e", {
                     ["blank", "15px"],
 					 ["upgrades", [1,2]], 
 					 ["row", [["buyables", [2]], ["upgrades", [3]]]],
-					 ["upgrades", [4,5,6,7]], 
+					 ["upgrades", [4,5,6,7,8]], 
 					                 ["blank", "15px"],
                 ]
             },
@@ -279,7 +283,7 @@ upgrades: {
 		title: "Essence XII",
 		description: "Boost essences gain based on time played",
 		cost: new Decimal(1e67),
-		effect() {return effect = Decimal.pow(1.0002, player.timePlayed)
+		effect() {effect = Decimal.pow(1.0002, player.timePlayed)
 		return effect},
 				effectDisplay() {return "x" + format(upgradeEffect("e", 31))},
 		unlocked() {return (hasUpgrade("r", 23))},
@@ -542,7 +546,7 @@ upgrades: {
 	title: "Essence XXI",
 	description: "Change Mana softcap go later: 1e60 => 1e80",
 	cost() {return Decimal.pow(10, 5370)},
-	unlocked() {return (hasUpgrade("e", 61))},
+	unlocked() {return (hasUpgrade("e", 61) && (!inChallenge("v", 12)))},
 			style() {
 				if (hasUpgrade("e", 62) || player.e.points.gte(this.cost)) return {
 							  'width': "160px",
@@ -565,12 +569,119 @@ upgrades: {
 	},
 },
 63: {
-	title: "Essence XXI",
+	title: "Essence XXII",
 	description: "Change Mana softcap go later: 1e80 => 1e120",
 	cost() {return Decimal.pow(10, 6100)},
-	unlocked() {return (hasUpgrade("e", 62))},
+	unlocked() {return (hasUpgrade("e", 62) && (!inChallenge("v", 12)))},
 			style() {
 				if (hasUpgrade("e", 63) || player.e.points.gte(this.cost)) return {
+							  'width': "160px",
+	  'border-radius': '5%',
+	  'min-height': "100px",
+					  "border-color": 'rgb(69, 103, 56)',
+				'margin-left': '20px',
+								  'margin-top': '17px',
+			"background-color": 'black',
+							'color': "white"
+				}
+				else return {
+	  'width': "160px",
+	  'border-radius': '5%',
+	  'min-height': "100px",
+						  'margin-top': '17px',
+				'margin-left': '20px',
+			"background-color": 'gray',
+							'color': "white"}
+	},
+},
+71: {
+	title: "Essence XXIII",
+	description: "Remove the Mana Hardcap, but change it with softcap (starts at 1e140)",
+	cost() {return Decimal.pow(10, 6340)},
+	unlocked() {return (hasUpgrade("e", 63) && (!inChallenge("v", 12)))},
+			style() {
+				if (hasUpgrade("e", 71) || player.e.points.gte(this.cost)) return {
+							  'width': "160px",
+	  'border-radius': '5%',
+	  'min-height': "100px",
+					  "border-color": 'rgb(69, 103, 56)',
+				'margin-left': '20px',
+								  'margin-top': '17px',
+			"background-color": 'black',
+							'color': "white"
+				}
+				else return {
+	  'width': "160px",
+	  'border-radius': '5%',
+	  'min-height': "100px",
+						  'margin-top': '17px',
+				'margin-left': '20px',
+			"background-color": 'gray',
+							'color': "white"}
+	},
+},
+72: {
+	title: "Essence XXIV",
+	description: "Number of unlocked challenges boosts Mana gain",
+	cost() {return Decimal.pow(10, 6420)},
+	effect() {
+		return player.v.points.pow(15)},
+	effectDisplay() {return "x" + format(upgradeEffect("e", 72))},
+	unlocked() {return (hasUpgrade("e", 71))},
+			style() {
+				if (hasUpgrade("e", 72) || player.e.points.gte(this.cost)) return {
+							  'width': "160px",
+	  'border-radius': '5%',
+	  'min-height': "100px",
+					  "border-color": 'rgb(69, 103, 56)',
+				'margin-left': '20px',
+								  'margin-top': '17px',
+			"background-color": 'black',
+							'color': "white"
+				}
+				else return {
+	  'width': "160px",
+	  'border-radius': '5%',
+	  'min-height': "100px",
+						  'margin-top': '17px',
+				'margin-left': '20px',
+			"background-color": 'gray',
+							'color': "white"}
+	},
+},
+73: {
+	title: "Essence XXV",
+	description: "Increase Runes hardcap to 1e2000",
+	cost() {return Decimal.pow(10, 6650)},
+	unlocked() {return (hasUpgrade("e", 72))},
+			style() {
+				if (hasUpgrade("e", 73) || player.e.points.gte(this.cost)) return {
+							  'width': "160px",
+	  'border-radius': '5%',
+	  'min-height': "100px",
+					  "border-color": 'rgb(69, 103, 56)',
+				'margin-left': '20px',
+								  'margin-top': '17px',
+			"background-color": 'black',
+							'color': "white"
+				}
+				else return {
+	  'width': "160px",
+	  'border-radius': '5%',
+	  'min-height': "100px",
+						  'margin-top': '17px',
+				'margin-left': '20px',
+			"background-color": 'gray',
+							'color': "white"}
+	},
+},
+81: {
+	title: "Essence XXVI",
+	description: "Gain 100% of essences gain per second",
+	cost() {return Decimal.pow(10, 10440)},
+	unlocked() {return (hasUpgrade("e", 73))},
+			style() {
+				if (hasUpgrade("e", 81) || player.e.points.gte(this.cost)) return {
 							  'width': "160px",
 	  'border-radius': '5%',
 	  'min-height': "100px",
@@ -677,5 +788,8 @@ update(diff) {
 			if (hasUpgrade("r", 14)) keep.push("buyables", "upgrades")
 		  layerDataReset("e", keep)
 		},
+		passiveGeneration() {				
+				if (hasUpgrade("e", 81)) return (hasUpgrade("e", 81)?1:0)
+},
     layerShown(){return true}
 })

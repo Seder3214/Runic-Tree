@@ -291,14 +291,7 @@ upgrades: {
 		unlocked() {return hasUpgrade("r", 21)},
 		description: "Buyed upgrades boosts essence gain",
 		
-		effect() {				if (player.a.frthAEE > 1) eff = Decimal.pow(2, player.r.upgrades.length).times(upgradeEffect("r", 23)).times(Decimal.pow(2, upgradeEffect("e", 41).add(1))).times(player.a.firstARE).pow(player.a.firstAREE).times(tmp.a.scndARE).pow(tmp.a.scndAREE).times(tmp.a.thrdARE).pow(tmp.a.thrdAREE).times(tmp.a.effect2).times(tmp.a.effect).times(tmp.a.effect3).times(player.a.frthAEE).times(tmp.a.effect4)
-		if (player.a.frthAEEE > 1) eff = Decimal.pow(2, player.r.upgrades.length).times(upgradeEffect("r", 23)).times(Decimal.pow(2, upgradeEffect("e", 41).add(1))).times(player.a.firstARE).pow(player.a.firstAREE).times(tmp.a.scndARE).pow(tmp.a.scndAREE).times(tmp.a.thrdARE).pow(tmp.a.thrdAREE).times(tmp.a.effect2).times(tmp.a.effect).times(tmp.a.effect3).times(player.a.frthAEE).pow(player.a.frthAEEE).times(tmp.a.effect4)
-							if (player.a.thrdAEE > 1) eff = Decimal.pow(2, player.r.upgrades.length).times(upgradeEffect("r", 23)).times(Decimal.pow(2, upgradeEffect("e", 41).add(1))).times(player.a.firstARE).pow(player.a.firstAREE).times(tmp.a.scndARE).pow(tmp.a.scndAREE).times(tmp.a.thrdARE).times(tmp.a.effect2).times(tmp.a.effect).times(tmp.a.effect3)
-			if (player.a.thrdAEEE > 1) eff = Decimal.pow(2, player.r.upgrades.length).times(upgradeEffect("r", 23)).times(Decimal.pow(2, upgradeEffect("e", 41).add(1))).times(player.a.firstARE).pow(player.a.firstAREE).times(tmp.a.scndARE).pow(tmp.a.scndAREE).times(tmp.a.thrdARE).pow(tmp.a.thrdAREE).times(tmp.a.effect2).times(tmp.a.effect).times(tmp.a.effect3)
-			if (player.a.scndAREE > 1) eff = Decimal.pow(2, player.r.upgrades.length).times(upgradeEffect("r", 23)).times(Decimal.pow(2, upgradeEffect("e", 41).add(1))).times(player.a.firstARE).pow(player.a.firstAREE).times(tmp.a.scndARE).pow(tmp.a.scndAREE).times(tmp.a.effect2).times(tmp.a.effect)
-						if (player.a.scndARE > 1) eff = Decimal.pow(2, player.r.upgrades.length).times(upgradeEffect("r", 23)).times(Decimal.pow(2, upgradeEffect("e", 41).add(1))).times(player.a.firstARE.times(tmp.a.effect)).pow(player.a.firstAREE).times(player.a.scndARE).times(tmp.a.effect).times(tmp.a.effect2)
-			if (player.a.firstAREE > 1) eff = Decimal.pow(2, player.r.upgrades.length).times(upgradeEffect("r", 23)).times(Decimal.pow(2, upgradeEffect("e", 41).add(1))).times(player.a.firstARE).pow(player.a.firstAREE).times(tmp.a.effect)
-			if (player.a.firstARE > 1) eff = Decimal.pow(2, player.r.upgrades.length).times(upgradeEffect("r", 23)).times(Decimal.pow(2, upgradeEffect("e", 41).add(1))).times(player.a.firstARE).times(tmp.a.effect)
+		effect() {
 			if (hasUpgrade("r", 23)) eff = Decimal.pow(2, player.r.upgrades.length).times(upgradeEffect("r", 23)).times(Decimal.pow(2, upgradeEffect("e", 41).add(1)))
 			else eff = Decimal.pow(2, player.r.upgrades.length)
 		return eff;},
@@ -315,7 +308,8 @@ upgrades: {
 	},
 },
 update(diff) {
-	if (player.r.points.gte(Decimal.pow(10, 1200))) player.r.points = player.r.points.div(2).min(Decimal.pow(10, 1060))
+	if (player.r.points.gte(Decimal.pow(10, 1200)) && (!hasUpgrade("e", 73))) player.r.points = player.r.points.div(2).min(Decimal.pow(10, 1060))
+	if (player.r.points.gte(Decimal.pow(10, 2000)) && (hasUpgrade("e", 73))) player.r.points = player.r.points.div(2).min(Decimal.pow(10, 2000))
 },
     layerShown(){return true}
 })

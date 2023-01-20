@@ -146,12 +146,12 @@
 
 /* Used for respec button and similar */
 .longUpg {
-	height: 50px;
+	height: 30px;
 	width: 120px;
-	background: var(--points);
-	border-radius: 50%;
+	border-color: rgba(149, 80, 12);
+	color: white;
+	border-radius: 40%;
 	border: 2px solid;
-	border-color: rgba(0, 0, 0, 0.125);
 	font-size: 10px;
 }
 

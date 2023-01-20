@@ -22,9 +22,12 @@ addLayer("al", {
 						if (hasUpgrade("al", 11)) mult = mult.times(upgradeEffect("al", 11))
 						if (hasUpgrade("al", 22)) mult = mult.pow(upgradeEffect("al", 22))
 						if (hasUpgrade("al", 31)) mult = mult.times(upgradeEffect("al", 31))
-						if (hasUpgrade("e", 53)) mult = mult = mult = softcap(mult, Decimal.pow(10, 120), new Decimal(0.05))
+						if (hasUpgrade("e", 53)) mult = softcap(mult, Decimal.pow(10, 120), new Decimal(0.2))
 						if (hasUpgrade("e", 52)) mult = mult = softcap(mult, Decimal.pow(10, 80), new Decimal(0.05))
 						if (player.al.points.gte(1e50)) mult = mult = softcap(mult, Decimal.pow(10, 50), new Decimal(0.05))
+						if (player.al.points.gte(1e135)) mult = mult = softcap(mult, Decimal.pow(10, 135), new Decimal(0.05))
+						if (hasUpgrade("e", 72)) mult = mult.times(upgradeEffect("e", 72))
+						if (player.al.buyables[12].gte(1)) mult = mult.times(buyableEffect("al", 12))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -320,12 +323,74 @@ addLayer("al", {
 								'color': "white"}
         },
 },
+41: {
+	title: "Mana X",
+	description: "Artifact slots gives exponental boost to essences gain at reduced rate",
+	cost: new Decimal(4.214e238),
+	effect() { if (hasUpgrade("al", 42)) return player.a.points.pow(0.2).times(upgradeEffect("al", 42))
+		else return player.a.points.pow(0.2)},
+			effectDisplay() {return "^" + format(upgradeEffect("al", 41),4)},
+	unlocked() {return (hasUpgrade("e", 81))},
+			style() {
+				if (hasUpgrade("al", 41) || player.al.points.gte(this.cost)) return {
+							  'width': "160px",
+	  'border-radius': '5%',
+	  'min-height': "100px",
+	  "border-color": '#6495ed',
+				'margin-left': '20px',
+								  'margin-top': '17px',
+			"background-color": 'black',
+			'margin-right': '20px',
+							'color': "white"
+				}
+				else return {
+	  'width': "160px",
+	  'border-radius': '5%',
+	  'min-height': "100px",
+						  'margin-top': '17px',
+				'margin-left': '20px',
+				'margin-right': '20px',
+			"background-color": 'gray',
+							'color': "white"}
+	},
+},
+42: {
+	title: "Mana XI",
+	description: "[Mana IX] gives a boost to [Mana X] effect",
+	cost: new Decimal(4.214e238),
+	effect() { return upgradeEffect("al", 33).pow(20)},
+			effectDisplay() {return "x" + format(upgradeEffect("al", 42),4)},
+	unlocked() {return (hasUpgrade("al", 41))},
+			style() {
+				if (hasUpgrade("al", 42) || player.al.points.gte(this.cost)) return {
+							  'width': "160px",
+	  'border-radius': '5%',
+	  'min-height': "100px",
+	  "border-color": '#6495ed',
+				'margin-left': '20px',
+								  'margin-top': '17px',
+			"background-color": 'black',
+			'margin-right': '20px',
+							'color': "white"
+				}
+				else return {
+	  'width': "160px",
+	  'border-radius': '5%',
+	  'min-height': "100px",
+						  'margin-top': '17px',
+				'margin-left': '20px',
+				'margin-right': '20px',
+			"background-color": 'gray',
+							'color': "white"}
+	},
+},
 	},
 	buyables: {
 		11: {
 			title: "Mana Orb",
+			purchaseLimit: 25,
 			 cost(x) {return new Decimal(1e50).times(new Decimal(1e10).pow(x).max(1))},
-			display() { return `Reset Artifact layer, but give free artifact slot and boost to essences<br>Level: ${formatWhole(getBuyableAmount(this.layer, this.id))} <br>  Cost: ${format(this.cost())} Mana<br>Currently: x${format(this.effect(),3)}`},
+			display() { return `Reset Artifact layer, but give free artifact slot (on first buy) and boost to essences<br>Level: ${formatWhole(getBuyableAmount(this.layer, this.id))}/25 <br>  Cost: ${format(this.cost())} Mana<br>Currently: x${format(this.effect(),3)}`},
 			effect(x) {eff = new Decimal(2.75).pow(x.add(1))
 		 return eff;},
 					canAfford() {return (player.al.points.gte(this.cost()))},
@@ -357,9 +422,45 @@ addLayer("al", {
 			},
 			unlocked() {return hasUpgrade("r", 14)},
 	},
+	12: {
+		title: "Mana Wand",
+		purchaseLimit: 40,
+		 cost(x) {return new Decimal(1e129).times(new Decimal(1e5).pow(x).max(1))},
+		display() { return `Boost Mana gain<br>Level: ${formatWhole(getBuyableAmount(this.layer, this.id))}/40 <br>  Cost: ${format(this.cost())} Mana<br>Currently: x${format(this.effect(),3)}`},
+		effect(x) {eff = new Decimal(20.75).pow(x.add(1))
+	 return eff;},
+				canAfford() {return (player.al.points.gte(this.cost()))},
+				buy() {
+		  player.al.points = player.al.points.sub(this.cost())
+			  setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+		},
+		style() {
+					if (player.al.points.gte(this.cost()) || player.al.buyables[this.id].gte(1)) return {
+								  'width': "160px",
+		  'border-radius': '5%',
+		  'height': "100px",
+					'margin-bottom': '13px',
+				"background-color": 'black',
+				   'background-image': 'repeating-linear-gradient(-45deg, rgb(0, 0, 0), 10%, rgb(34, 34, 34) 10%, rgb(34, 34, 34) 20%)',
+				'animation': '2000ms linear 0s infinite running true',
+				"border-color": '#6495ed',
+				'color': "white",
+					}
+					else return {
+		  'width': "160px",
+		  'border-radius': '5%',
+		  'margin-bottom': '13px',
+					'height': "100px",
+				"background-color": 'gray',
+								'color': "white"}
+		},
+		unlocked() {return (player.al.buyables[11].gte(11))},
+},
 	},
 	update(diff) {
-		if (player.al.points.gte(1e120)) player.al.points = player.al.points.div(2).min(1e120)
+		if (player.al.points.gte(1e9) && (inChallenge("v", 13))) player.al.points = player.al.points.div(2).min(1e9)	
+		if (player.al.points.gte(1e30) && (inChallenge("v", 12))) player.al.points = player.al.points.div(2).min(1e30)	
+		if (player.al.points.gte(1e120) && (!hasUpgrade("e", 71))) player.al.points = player.al.points.div(2).min(1e120)
 	},
 onPrestige() {
 return	player.e.points = new Decimal(0)
