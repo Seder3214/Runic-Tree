@@ -111,13 +111,13 @@ function addedPlayerData() { return {
 
 // Display extra things at the top of the page
 var displayThings = [
-function(){return "Current endgame: 1e6100 Essences"},
+function(){return "Current endgame: 4 challenges"},
 ]
 
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.e.points.gte(Decimal.pow(10, 6100))
+	return player.v.points.gte(4)
 }
 
 
