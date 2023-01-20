@@ -308,8 +308,8 @@ upgrades: {
 	},
 },
 update(diff) {
-	if (player.r.points.gte(Decimal.pow(10, 1200)) && (!hasUpgrade("e", 73))) player.r.points = player.r.points.div(2).min(Decimal.pow(10, 1060))
-	if (player.r.points.gte(Decimal.pow(10, 1930)) && (hasUpgrade("e", 73))) player.r.points = player.r.points.div(2).min(Decimal.pow(10, 1930))
+	if (hasUpgrade("e", 73)) player.r.points = player.r.points.div(2).min(Decimal.pow(10, 1930))
+	else if (player.r.points.gte(Decimal.pow(10, 1200)) && (!hasUpgrade("e", 73))) player.r.points = player.r.points.div(2).min(Decimal.pow(10, 1060))
 },
     layerShown(){return true}
 })
