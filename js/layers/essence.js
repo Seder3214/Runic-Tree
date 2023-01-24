@@ -59,6 +59,14 @@ addLayer("e", {
  if (inChallenge("v", 13)) mult = mult.pow(0.2)
  if (hasUpgrade("al", 41)) mult = mult.pow(upgradeEffect("al", 41))
  if (inChallenge("v", 21)) mult = mult.min(10)
+ if (hasUpgrade("c", 11)) mult = mult.times(upgradeEffect("c", 11))
+ if (hasUpgrade("c", 21)) mult = mult.times(upgradeEffect("c", 21))
+ if (hasUpgrade("c", 32)) mult = mult.pow(upgradeEffect("c", 32))
+ if (hasUpgrade("c", 41)) mult = mult.times(upgradeEffect("c", 41))
+ if (inChallenge("v", 22)) mult = mult.min(10)
+ if (hasChallenge("v", 22)) mult = mult.times(Decimal.pow(150000, player.c.upgrades.length))
+ if (hasUpgrade("c", 23)) mult = mult.times(upgradeEffect("c", 23))
+ if (inChallenge("v", 23)) mult = mult.pow(0.1)
 					return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -156,7 +164,7 @@ eff = new Decimal(120).times(x.add(1).pow(2.35))
 		title: "Essence X",
 		purchaseLimit: 50,
 		 cost(x) {return new Decimal(1e38).times(new Decimal(45000).times(x.times(x).pow(5.25).max(0.5)).pow(x.sub(7.7).max(1)))},
-        display() { return `Increase [Essence Purifier] softcap.<br>Cost: ${format(this.cost())} essences<br>Currently: ^${format(this.effect(),3)}`},
+        display() { return `Increase [Essence Purifier] softcap.<br>Level: ${formatWhole(getBuyableAmount(this.layer, this.id))}/50 <br>Cost: ${format(this.cost())} essences<br>Currently: ^${format(this.effect(),3)}`},
 		effect(x) {eff = new Decimal(1.05).pow(x).times(upgradeEffect("al", 12)).times(upgradeEffect("al", 13))
 	 eff = softcap(eff, new Decimal(1.1), new Decimal(0.1))
 	 return eff;},
@@ -546,7 +554,7 @@ upgrades: {
 	title: "Essence XXI",
 	description: "Change Mana softcap go later: 1e60 => 1e80",
 	cost() {return Decimal.pow(10, 5370)},
-	unlocked() {return (hasUpgrade("e", 61) && (!inChallenge("v", 12)))},
+	unlocked() {return (hasUpgrade("e", 61) && (!inChallenge("v", 12)) && (!inChallenge("v", 22)))},
 			style() {
 				if (hasUpgrade("e", 62) || player.e.points.gte(this.cost)) return {
 							  'width': "160px",
@@ -572,7 +580,7 @@ upgrades: {
 	title: "Essence XXII",
 	description: "Change Mana softcap go later: 1e80 => 1e120",
 	cost() {return Decimal.pow(10, 6100)},
-	unlocked() {return (hasUpgrade("e", 62) && (!inChallenge("v", 12)))},
+	unlocked() {return (hasUpgrade("e", 62) && (!inChallenge("v", 12)) && (!inChallenge("v", 22)))},
 			style() {
 				if (hasUpgrade("e", 63) || player.e.points.gte(this.cost)) return {
 							  'width': "160px",
@@ -598,7 +606,7 @@ upgrades: {
 	title: "Essence XXIII",
 	description: "Increase Mana softcap (starts at 1e140)",
 	cost() {return Decimal.pow(10, 6340)},
-	unlocked() {return (hasUpgrade("e", 63) && (!inChallenge("v", 12)))},
+	unlocked() {return (hasUpgrade("e", 63) && (!inChallenge("v", 12)) && (!inChallenge("v", 22)))},
 			style() {
 				if (hasUpgrade("e", 71) || player.e.points.gte(this.cost)) return {
 							  'width': "160px",
@@ -769,6 +777,14 @@ player.e.na = player.e.na.add(10)
 },
 },
 update(diff) {
+	if (hasMilestone("c", 11)) {
+		player.e.uc = player.e.uc.add(player.e.l.times(2.35).times(buyableEffect("r", 12)).times(upgradeEffect("r", 11)).times(100).times(diff)).add(diff)
+		player.e.c = player.e.c.add(new Decimal(1).times(10).times(diff))
+		player.e.rc = player.e.rc.add((buyableEffect("r", 14)).times(100).times(diff))
+		player.e.r = player.e.r.add(player.e.rc.pow(0.05).times(100).times(diff))
+	player.e.l = player.e.l.add(player.e.rc.pow(0.01).div(2).times(100).times(diff))
+	player.e.e = player.e.e.add(player.e.rc.pow(0.01).div(2).times(100).times(diff))
+		}
 		if (player.e.rc.gte(0)) {
 			player.e.rc = player.e.rc.add((buyableEffect("r", 14)).times(diff))
 			player.e.r = player.e.r.add(player.e.rc.pow(0.05).times(diff))
@@ -784,6 +800,7 @@ update(diff) {
 			    		doReset(resettingLayer) {
 			if (layers[resettingLayer].row <= layers[this.layer].row) return
 			let keep = [];
+			if (hasMilestone("c", 11)) player.e.upgrades = filterOut(player.e.upgrades, [11,12,13,14,15,21,22,23,24])
 			if (hasUpgrade("r", 12)) keep.push("buyables")
 			if (hasUpgrade("r", 14)) keep.push("buyables", "upgrades")
 		  layerDataReset("e", keep)

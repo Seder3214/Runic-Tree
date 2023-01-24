@@ -151,10 +151,70 @@ if (hasChallenge("v", 13) || (player.points.gte(Decimal.pow(10, 480)))) return {
 "height": "230px",
 "width": '230px',
 'border-radius': '20%',
-'margin-left': '5px',
 'border': '2px solid',
 "background-color": 'black',
 "border-color": '#95500c',
+'color': 'white',
+}
+else return {
+"height": "230px",
+"width": '230px',
+'border-radius': '20%',
+"background-color": 'gray',  
+}
+},
+},
+22: {
+    name: "Stardust Challenge 1",
+    challengeDescription: "Evolve Challenge 2 and 4 at once",
+    goalDescription: "1e23 Essences",
+    unlocked() {return (hasUpgrade("c", 41))},
+    onEnter() {
+layerDataReset("e")
+layerDataReset("a")
+    },
+    canComplete: function() {return player.e.points.gte(Decimal.pow(10, 23))},
+    rewardDescription() {return "Buyed stars boosts Mana and Essences gain at boosted rate. <br>Currently: x" + format(Decimal.pow(150000, player.c.upgrades.length))},
+style() {
+if (hasChallenge("v", 22) || (player.points.gte(Decimal.pow(10, 23)))) return {
+"height": "230px",
+"width": '230px',
+'border-radius': '20%',
+'margin-left': '5px',
+'border': '2px solid',
+"background-color": 'black',
+"border-color": '#9db1cc',
+'color': 'white',
+}
+else return {
+"height": "230px",
+"width": '230px',
+'margin-left': '5px',
+'border-radius': '20%',
+"background-color": 'gray',  
+}
+},
+},
+23: {
+    name: "Stardust Challenge 2",
+    challengeDescription: "Runes are off and Essence gain is decreased by ^0.15",
+    goalDescription: "1e152 Essences",
+    unlocked() {return (hasUpgrade("c", 41))},
+    onEnter() {
+layerDataReset("e")
+layerDataReset("a")
+    },
+    canComplete: function() {return player.e.points.gte(Decimal.pow(10, 152))},
+    rewardDescription() {return "Return the ability to use artifacts and Unlock Enchantment"},
+style() {
+if (hasChallenge("v", 23) || (player.points.gte(Decimal.pow(10, 152)))) return {
+"height": "230px",
+"width": '230px',
+'border-radius': '20%',
+'margin-left': '5px',
+'border': '2px solid',
+"background-color": 'black',
+"border-color": '#9db1cc',
 'color': 'white',
 }
 else return {

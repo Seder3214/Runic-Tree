@@ -28,6 +28,7 @@ addLayer("al", {
 						if (player.al.points.gte(1e135)) mult = mult = softcap(mult, Decimal.pow(10, 135), new Decimal(0.05))
 						if (hasUpgrade("e", 72)) mult = mult.times(upgradeEffect("e", 72))
 						if (player.al.buyables[12].gte(1)) mult = mult.times(buyableEffect("al", 12))
+						if(hasChallenge("v", 22)) mult = mult.times(Decimal.pow(150000, player.c.upgrades.length))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -297,7 +298,7 @@ addLayer("al", {
 		title: "Mana IX",
 		description: "Artifact slots gives exponental boost to points gain at reduced rate",
 		cost: new Decimal(4.214e18),
-		effect() { return player.a.points.pow(0.02)},
+		effect() { return player.a.points.pow(0.02).max(1)},
 				effectDisplay() {return "^" + format(upgradeEffect("al", 33),3)},
 		unlocked() {return (hasUpgrade("al", 32))},
 		        style() {
@@ -328,7 +329,7 @@ addLayer("al", {
 	description: "Artifact slots gives exponental boost to essences gain at reduced rate",
 	cost: new Decimal(4.214e232),
 	effect() { if (hasUpgrade("al", 42)) return player.a.points.pow(0.2).times(upgradeEffect("al", 42))
-		else return player.a.points.pow(0.2)},
+		else return player.a.points.pow(0.2).max(1)},
 			effectDisplay() {return "^" + format(upgradeEffect("al", 41),4)},
 	unlocked() {return (hasUpgrade("e", 81))},
 			style() {
@@ -358,7 +359,7 @@ addLayer("al", {
 	title: "Mana XI",
 	description: "[Mana IX] gives a boost to [Mana X] effect",
 	cost: new Decimal(4.214e300),
-	effect() { return upgradeEffect("al", 33).pow(20)},
+	effect() { return upgradeEffect("al", 33).pow(20).max(1)},
 			effectDisplay() {return "x" + format(upgradeEffect("al", 42),4)},
 	unlocked() {return (hasUpgrade("al", 41))},
 			style() {
@@ -458,6 +459,7 @@ addLayer("al", {
 },
 	},
 	update(diff) {
+		if (player.al.points.gte(1e30) && (inChallenge("v", 22))) player.al.points = player.al.points.div(2).min(1e30)	
 		if (player.al.points.gte(1e9) && (inChallenge("v", 13))) player.al.points = player.al.points.div(2).min(1e9)	
 		if (player.al.points.gte(1e30) && (inChallenge("v", 12))) player.al.points = player.al.points.div(2).min(1e30)	
 		if (player.al.points.gte(1e120) && (!hasUpgrade("e", 71))) player.al.points = player.al.points.div(2).min(1e120)

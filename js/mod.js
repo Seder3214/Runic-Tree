@@ -3,7 +3,7 @@ let modInfo = {
 	id: "runic",
 	author: "Seder3214",
 	pointsName: "points",
-	modFiles: ["layers/essence.js", "layers/runes.js", "layers/artifacts.js", "tree.js", "layers/altar.js", "layers/evolve.js"],
+	modFiles: ["layers/essence.js", "layers/runes.js", "layers/artifacts.js", "tree.js", "layers/altar.js", "layers/evolve.js", "layers/constellations.js"],
 
 	discordName: "",
 	discordLink: "",
@@ -13,11 +13,14 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.6.4.5",
+	num: "0.7",
 	name: "Literally nothing",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+<br><h3 style='color: #9db1cc;'>v0.7 - Constellations</h3><br>
+<span style='color: #808080'> - New layer!<br>
+- New challenges</span>
 <br><h3 style='color: #95500c;'>v0.6.4.5 - Evolve</h3><br>
 <span style='color: #808080'> - New layer!<br>
 - Reworked artifact system</span>
@@ -111,13 +114,13 @@ function addedPlayerData() { return {
 
 // Display extra things at the top of the page
 var displayThings = [
-function(){return "Current endgame: 4 challenges"},
+function(){return "Current endgame: Stardust Challenge 2 completion"},
 ]
 
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.v.points.gte(4)
+	return (hasChallenge("v", 23))
 }
 
 

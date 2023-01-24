@@ -6,11 +6,14 @@ addLayer("r", {
         unlocked: false,
 		points: new Decimal(0),
 		best: new Decimal(0),
+		cd: new Decimal(0),
     }},
     color: "#C0C0C0",
     requires() {if (hasUpgrade("e", 25)) return new Decimal(1e50)
 		else return new Decimal(2e12)}, 
-		effectDescription() {return `<br>Runes will be <h3 style="color='red';">hardcapped</h3> at 1e1060`}, // Can be a function that takes requirement increases into account// Can be a function that takes requirement increases into account
+		canReset() {return (player.r.cd.lte(0))},
+		effectDescription() {if (player.c.dC >= 1) return `<br>There is a 5 second cooldown to reset Runes (` + format(player.r.cd) + `)`
+			else return `<br>Runes will be <h3 style="color='red';">hardcapped</h3> at 1e1060`}, // Can be a function that takes requirement increases into account// Can be a function that takes requirement increases into account
     resource: "runes", // Name of prestige currency
     baseResource: "essence", // Name of resource prestige is based on
     baseAmount() {return player.e.points}, // Get the current amount of baseResource
@@ -21,6 +24,7 @@ addLayer("r", {
 	branches: ["e"],// Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
+		if (hasUpgrade("c", 31)) mult = mult.times(upgradeEffect("c", 31))
 		if (player.r.points.gte(Decimal.pow(10, 1200))) mult = mult.min(0)
 		if (hasUpgrade("al", 23)) mult = mult.times(upgradeEffect("al", 23))
 		if (hasUpgrade("e", 25)) mult = mult.times(buyableEffect("r", 24)).times(upgradeEffect(this.layer, 13))
@@ -307,7 +311,12 @@ upgrades: {
 		cost: new Decimal(16725),
 	},
 },
+onPrestige() {
+	return player.r.cd = player.r.cd.add(5)
+},
 update(diff) {
+	if (inChallenge("v", 23)) player.r.points = player.r.points.min(1)
+	if (player.r.cd.gte(0)) player.r.cd = player.r.cd.sub(diff).max(0)
 	if (hasUpgrade("e", 73)) player.r.points = player.r.points.min(Decimal.pow(10, 1930))
 	else if (player.r.points.gte(Decimal.pow(10, 1200)) && (!hasUpgrade("e", 73))) player.r.points = player.r.points.div(2).min(Decimal.pow(10, 1060))
 },

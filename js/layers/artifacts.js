@@ -83,6 +83,7 @@ addLayer("a", {
 	branches: ["e"],// Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
+		if (player.c.dC >= 1 && (!hasChallenge("v", 23))) mult = mult.min(0)
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
